@@ -1,7 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import "./LogInForm.css";
+import LoginAPI from "../apis/loginApi";
 
 function LoginForm() {
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+
+    const handleLogin = (event) => {
+        event.preventDefault();
+        const credentials = {
+            username: username,
+            password: password
+        }
+        LoginAPI.login(credentials)
+            .then((response) => {
+                console.log(response.status);
+                console.log(response.data);
+                sessionStorage.setItem("token", response.data.accessToken)
+            })
+            .catch(function (error) {
+                sessionStorage.removeItem("token")
+                console.log(error);
+                alert("Login failed! Check your username and password!")
+            });
+    };
 
     return (
         <div>
@@ -10,14 +32,14 @@ function LoginForm() {
                 <form className="login-form">
                     <h2 className="login-heading">Log in</h2>
                     <div className="form-group">
-                        <label htmlFor="email">Email:</label>
-                        <input type="email" id="email" name="email" />
+                        <label htmlFor="username">Username:</label>
+                        <input type="text" id="username" name="username" onChange={(event) => setUsername(event.target.value)}/>
                     </div>
                     <div className="form-group">
                         <label htmlFor="password">Password:</label>
-                        <input type="password" id="password" name="password" />
+                        <input type="password" id="password" name="password" onChange={(event) => setPassword(event.target.value)}/>
                     </div>
-                    <button className="login-btn">Log in</button>
+                    <button onClick={handleLogin} className="login-btn">Log in</button>
                 </form>
             </div>
         </div>
