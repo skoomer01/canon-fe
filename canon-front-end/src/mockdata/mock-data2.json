@@ -1,0 +1,380 @@
+[
+    {
+      "id": 1,
+      "buildTime": "2022-04-25 10:30:00",
+      "testVersion": "v1.0.0",
+      "commitSHA": "0123456789abcdef",
+      "testSets": [
+        {
+          "id": 1,
+          "name": "Test Set 1",
+          "description": "This is a test set.",
+          "tests":[
+            {
+                "id": 1,
+                "name": "Test 1",
+                "status": "Failed"
+              },
+              {
+                "id": 2,
+                "name": "Test 2",
+                "status": "Passed"
+              }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Test Set 2",
+          "description": "This is another test set.",
+          "tests":[
+            {
+                "id": 1,
+                "name": "Test 1",
+                "status": "Failed"
+              },
+              {
+                "id": 2,
+                "name": "Test 2",
+                "status": "Passed"
+              },
+              {
+                "id": 3,
+                "name": "Test 3",
+                "status": "Failed"
+              },
+              {
+                "id": 4,
+                "name": "Test 4",
+                "status": "Passed"
+              }
+          ]
+        }
+        ,
+        {
+          "id": 3,
+          "name": "Test Set 3",
+          "description": "This is another test set.",
+          "tests":[
+            {
+                "id": 1,
+                "name": "Test 1",
+                "status": "Failed"
+              },
+              {
+                "id": 2,
+                "name": "Test 2",
+                "status": "Passed"
+              },
+              {
+                "id": 3,
+                "name": "Test 3",
+                "status": "Failed"
+              },
+              {
+                "id": 4,
+                "name": "Test 4",
+                "status": "Passed"
+              },
+              {
+                "id": 5,
+                "name": "Test 5",
+                "status": "Failed"
+              },
+              {
+                "id": 6,
+                "name": "Test 6",
+                "status": "Passed"
+              },
+              {
+                "id": 7,
+                "name": "Test 7",
+                "status": "Failed"
+              }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "buildTime": "2022-04-26 11:00:00",
+      "testVersion": "v1.1.0",
+      "commitSHA": "fedcba9876543210",
+      "testSets": [
+        {
+          "id": 1,
+          "name": "Test Set 1",
+          "description": "This is a test set.",
+          "tests":[
+            {
+                "id": 1,
+                "name": "Test 1",
+                "status": "Failed"
+              },
+              {
+                "id": 2,
+                "name": "Test 2",
+                "status": "Passed"
+              }
+          ]
+          
+        },
+        {
+          "id": 2,
+          "name": "Test Set 2",
+          "description": "This is another test set.",
+          "tests":[
+            {
+                "id": 1,
+                "name": "Test 1",
+                "status": "Failed"
+              },
+              {
+                "id": 2,
+                "name": "Test 2",
+                "status": "Passed"
+              },
+              {
+                "id": 3,
+                "name": "Test 3",
+                "status": "Failed"
+              },
+              {
+                "id": 4,
+                "name": "Test 4",
+                "status": "Passed"
+              }          
+          ]
+        },
+        {
+          "id": 3,
+          "name": "Test Set 3",
+          "description": "This is another test set.",
+          "tests":[
+            {
+              "id": 1,
+              "name": "Test 1",
+              "status": "Failed"
+            },
+            {
+              "id": 2,
+              "name": "Test 2",
+              "status": "Passed"
+            },
+            {
+              "id": 3,
+              "name": "Test 3",
+              "status": "Failed"
+            },
+            {
+              "id": 4,
+              "name": "Test 4",
+              "status": "Passed"
+            },
+            {
+              "id": 5,
+              "name": "Test 5",
+              "status": "Failed"
+            },
+            {
+              "id": 6,
+              "name": "Test 6",
+              "status": "Passed"
+            },
+            {
+              "id": 7,
+              "name": "Test 7",
+              "status": "Failed"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "buildTime": "2022-04-27 12:00:00",
+      "testVersion": "v1.2.0",
+      "commitSHA": "ghijklmnopqrstuvwxy",
+      "testSets": [
+        {
+          "id": 1,
+          "name": "Test Set 1",
+          "description": "This is a test set.",
+          "tests":[
+            {
+                "id": 1,
+                "name": "Test 1",
+                "status": "Failed"
+              },
+              {
+                "id": 2,
+                "name": "Test 2",
+                "status": "Passed"
+              }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Test Set 2",
+          "description": "This is another test set.",
+          "tests":[
+            {
+              "id": 1,
+              "name": "Test 1",
+              "status": "Failed"
+            },
+            {
+              "id": 2,
+              "name": "Test 2",
+              "status": "Passed"
+            },
+            {
+              "id": 3,
+              "name": "Test 3",
+              "status": "Failed"
+            },
+            {
+              "id": 4,
+              "name": "Test 4",
+              "status": "Passed"
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "name": "Test Set 3",
+          "description": "This is another test set.",
+          "tests":[
+            {
+                "id": 1,
+                "name": "Test 1",
+                "status": "Failed"
+              },
+              {
+                "id": 2,
+                "name": "Test 2",
+                "status": "Passed"
+              },
+              {
+                "id": 3,
+                "name": "Test 3",
+                "status": "Failed"
+              },
+              {
+                "id": 4,
+                "name": "Test 4",
+                "status": "Passed"
+              },
+              {
+                "id": 5,
+                "name": "Test 5",
+                "status": "Failed"
+              },
+              {
+                "id": 6,
+                "name": "Test 6",
+                "status": "Passed"
+              },
+              {
+                "id": 7,
+                "name": "Test 7",
+                "status": "Failed"
+              }
+          ]
+        }
+      ]
+    },
+    {
+        "id": 4,
+        "buildTime": "2022-04-28 09:30:00",
+        "testVersion": "v1.3.0",
+        "commitSHA": "0123456789abcdef",
+        "testSets": [
+          {
+            "id": 1,
+            "name": "Test Set 1",
+            "description": "This is a test set.",
+            "tests":[
+                {
+                    "id": 1,
+                    "name": "Test 1",
+                    "status": "Failed"
+                  },
+                  {
+                    "id": 2,
+                    "name": "Test 2",
+                    "status": "Passed"
+                  }
+              ]
+          },
+          {
+            "id": 2,
+            "name": "Test Set 2",
+            "description": "This is another test set.",
+            "tests":[
+                {
+                    "id": 1,
+                    "name": "Test 1",
+                    "status": "Failed"
+                  },
+                  {
+                    "id": 2,
+                    "name": "Test 2",
+                    "status": "Passed"
+                  },
+                  {
+                    "id": 3,
+                    "name": "Test 3",
+                    "status": "Failed"
+                  },
+                  {
+                    "id": 4,
+                    "name": "Test 4",
+                    "status": "Passed"
+                  }
+              ]
+          },
+          {
+            "id": 3,
+            "name": "Test Set 3",
+            "description": "This is another test set.",
+            "tests":[
+                {
+                    "id": 1,
+                    "name": "Test 1",
+                    "status": "Failed"
+                  },
+                  {
+                    "id": 2,
+                    "name": "Test 2",
+                    "status": "Passed"
+                  },
+                  {
+                    "id": 3,
+                    "name": "Test 3",
+                    "status": "Failed"
+                  },
+                  {
+                    "id": 4,
+                    "name": "Test 4",
+                    "status": "Passed"
+                  },
+                  {
+                    "id": 5,
+                    "name": "Test 5",
+                    "status": "Failed"
+                  },
+                  {
+                    "id": 6,
+                    "name": "Test 6",
+                    "status": "Passed"
+                  },
+                  {
+                    "id": 7,
+                    "name": "Test 7",
+                    "status": "Passed"
+                  }
+              ]
+          }
+      
+        ]}]
+    
