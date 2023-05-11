@@ -14,6 +14,11 @@ function NavBar() {
             id: 2,
             path: "/testdetailspage",
             text: "Test details"
+        },
+        {
+            id: 4,
+            path: "/search",
+            text: "Search"
         }
     ]
 
