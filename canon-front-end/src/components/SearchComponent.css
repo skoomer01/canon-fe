@@ -44,3 +44,39 @@
   margin-top: 10px;
   text-align: center;
 }
+
+.card {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 10px;
+  width: 300px;
+}
+
+.card p {
+  margin: 5px;
+  font-size: 14px;
+  font-weight: bold;
+  font-family: 'Montserrat', sans-serif;
+}
+
+
+.card.failed {
+  /* background-color: #2ECC71; */
+  background-color: #B50909;
+  color: black;
+}
+
+.card.failed.p{
+  color: #CCCCCC;
+  font-weight: bold;
+}
+
+.card.passed {
+  background-color: #2ECC71 ;
+  color: black;
+}
+
+
+
+
+

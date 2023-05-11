@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { searchApiService } from '../API/searchApiService';
 import './SearchComponent.css';
+import {Card} from 'reactstrap';
+import { Link } from 'react-router-dom';
 
 function SearchComponent() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -58,14 +60,25 @@ function SearchComponent() {
       {results.length > 0 ? (
         <ul className="results-list">
           {results.map((result) => (
-            <li key={result.id}>{result.branchName}</li>
+            <div key={result.id}>
+              {result.testBatches.map((testBatch) => (
+                <Link to={`/testBatchDetail/${testBatch.id}`} style={{ textDecoration: 'none', color: 'inherit', fontFamily: 'inherit' }}>
+                  <Card className={`Card ${testBatch.testResult.toLowerCase()}`}>
+                    <p>Branch: {result.branchName.charAt(0).toUpperCase() + result.branchName.slice(1).toLowerCase()}</p>
+                    <p>Visibility: {result.visibility.charAt(0).toUpperCase() + result.visibility.slice(1).toLowerCase()}</p>
+                    <p>Version: {testBatch.version.charAt(0).toUpperCase() + testBatch.version.slice(1).toLowerCase()}</p>
+                    <p>Commit SHAL: {testBatch.commitShal.charAt(0).toUpperCase() + testBatch.commitShal.slice(1).toLowerCase()}</p>
+                    <p>Build Time: {testBatch.buildTime.charAt(0).toUpperCase() + testBatch.buildTime.slice(1).toLowerCase()}</p>
+                  </Card>
+                </Link>
+              ))}
+            </div>
           ))}
         </ul>
       ) : (
         <p className="no-results">No results found.</p>
       )}
     </div>
-  );
+  ); 
 }
-
 export default SearchComponent;
