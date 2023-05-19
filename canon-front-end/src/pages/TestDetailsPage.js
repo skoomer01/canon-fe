@@ -1,9 +1,10 @@
 import React from "react"
+import TestDetailsForm from "../components/TestDetailsForm";
 
 function TestDetailsPage(){
     return (
         <div className="App">
-            <p>Test details page</p>
+            <TestDetailsForm />
         </div>
     );
 }
