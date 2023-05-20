@@ -1,15 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import './TestSet.css';
+import testSetApi from "../apis/testSetApi";
 import testSetData from '../mockdata/mock-data.json';
 
-import { Card, CardBody, CardTitle, CardText, CardHeader } from 'reactstrap';
+import { Card, CardBody, CardTitle} from 'reactstrap';
 import { Link } from 'react-router-dom';
 
 function TestSetPage() {
   const [testSets, setTestSets] = useState([]);
 
+  const getLatestSets = () => {
+    testSetApi.getLatestTestSets()
+        .then((response) => setTestSets(response.data.latestTestSets))
+        .catch((error) => console.log(error))
+};
+
   useEffect(() => {
-    setTestSets(testSetData);
+    getLatestSets();
   }, []);
 
   const getTestSetStatus = (testSet) => {
@@ -38,12 +45,12 @@ function TestSetPage() {
       {testSets.map(testSet => (
         <div className="testset-column" key={testSet.id}>
           <h2>
-            {testSet.name}&nbsp;
-            <span className={getTestSetStatus(testSet) === "Passed" ? "text-success" : "text-danger"}>
+            Test set {testSet.name}&nbsp;
+            {/* <span className={getTestSetStatus(testSet) === "Passed" ? "text-success" : "text-danger"}>
               ({testSet.tests.length} tests)
-            </span>
+            </span> */}
           </h2>
-          {testSet.tests.map(test => (
+          {/* {testSet.tests.map(test => (
             <Link key={test.id} to="/testdetailspage" style={{ textDecoration: "none" }}>
               <Card className={`mb-3 ${getCardColor(test.status)}`}>
                 <CardBody>
@@ -51,7 +58,7 @@ function TestSetPage() {
                 </CardBody>
               </Card>
             </Link>
-          ))}
+          ))} */}
         </div>
       ))}
     </div>
