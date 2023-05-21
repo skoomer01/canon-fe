@@ -5,6 +5,7 @@ import HomePage from './pages/HomePage'
 import LogInPage from './pages/LogInPage'
 import TestDetailsPage from './pages/TestDetailsPage';
 import OverViewPage from "./pages/OverViewPage";
+import TestStepPage from "./pages/TestStepPage";
 function App() {
   return (
     <div className="App">
@@ -15,6 +16,7 @@ function App() {
           <Route path="/testdetailspage" element={<TestDetailsPage />} />
           <Route path="/LogInPage" element={<LogInPage />} />
           <Route path="/OverViewPage" element={<OverViewPage />} />
+          <Route path="/TestStep/:id" element={<TestStepPage />} />
         </Routes>
       </Router>
     </div>
