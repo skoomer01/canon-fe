@@ -12,7 +12,7 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/testdetailspage" element={<TestDetailsPage />} />
+          <Route path="/testdetailspage/:id" element={<TestDetailsPage />} />
           <Route path="/LogInPage" element={<LogInPage />} />
           <Route path="/OverViewPage" element={<OverViewPage />} />
         </Routes>

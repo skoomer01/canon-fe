@@ -1,10 +1,15 @@
 import React from "react"
 import TestDetailsForm from "../components/TestDetailsForm";
+import {useParams} from "react-router-dom";
 
-function TestDetailsPage(){
+const TestDetailsPage = () => {
+    const { id } = useParams();
+
+
     return (
+
         <div className="App">
-            <TestDetailsForm />
+            <TestDetailsForm testDetails={id}/>
         </div>
     );
 }

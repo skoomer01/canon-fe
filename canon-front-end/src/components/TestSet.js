@@ -44,7 +44,7 @@ function TestSetPage() {
             </span>
           </h2>
           {testSet.tests.map(test => (
-            <Link key={test.id} to="/testdetailspage" style={{ textDecoration: "none" }}>
+            <Link key={test.id} to={`/testdetailspage/${test.id}`} testDetails={test.id} style={{ textDecoration: "none" }}>
               <Card className={`mb-3 ${getCardColor(test.status)}`}>
                 <CardBody>
                   <CardTitle>{test.name}</CardTitle>

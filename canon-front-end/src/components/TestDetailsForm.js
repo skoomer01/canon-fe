@@ -1,41 +1,104 @@
 import React, { useState, useEffect, useRef } from "react"
-import TestApi from '../apis/testApi.js'
-import axios from 'axios';
-import { Navigate } from "react-router-dom";
-import testApi from "../apis/testApi.js";
+import testApi from '../apis/testApi.js'
+import subTestApi from "../apis/subTestApi.js";
+import testStepApi from "../apis/testStepApi.js";
 
 
-function TestDetailsForm() {
+function TestDetailsForm({testDetails}) {
+
+    const [subTests, setSubTests] = useState([]);
+    const [testSteps, setTestSteps] = useState([]);
+    const [test, setTest] = useState(null);
+    const [error, setError] = useState(null);
 
 
-    const [test, setTest] =useState(null);
+
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = testApi.getByID(4);
-                setTest(response.data); // Store the fetched data in the component's state
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
+        testApi.getTest(testDetails)
+            .then(response => {
+                console.log(response.data);
+                setTest(response.data);
 
-        fetchData();
-    }, []);
+            })
+            .catch(error => {
+            console.log(error);
+            setError(error);
+
+        })
+
+        subTestApi.getSubTestByTestID(testDetails)
+            .then(subtestsResponse => {
+                console.log(subtestsResponse.data.subTests);
+                setSubTests(subtestsResponse.data.subTests);
+            })
+            .catch(error => {
+                console.log(error);
+                setError(error);
+
+
+            })
+
+        testStepApi.getTestStepBySubTestID()
+            .then(testStepResponse => {
+                console.log(testStepResponse.data.testSteps);
+                setTestSteps(testStepResponse.data.testSteps);
+            })
+            .catch(error => {
+                console.log(error);
+                setError(error);
+
+
+            });
+            }, []);
+
+
 
 
 
         return (
             <div>
-                {/* Use the fetched entity within your component */}
-                {test && (
-                    <div>
-                        <h2>{test.id}</h2>
-                        <p>{test.name}</p>
-                    </div>
+                {test == null ? (
+                    <div>Nothing</div>
+                ):(
+                    <div>{test.testName}</div>
                 )}
+                <table>
+
+
+                    <thead>
+                    <tr>
+
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Test Result</th>
+                        <th>Details</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+
+                    {subTests.map(subtest => (
+
+                                <tr key={subtest.id}>
+                                    <td>{subtest.id}</td>
+                                    <td>{subtest.subtestName}</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+
+
+                            )
+                    )}
+
+
+
+                    </tbody>
+                </table>
             </div>
-        )
+
+
+);
 
 
 }

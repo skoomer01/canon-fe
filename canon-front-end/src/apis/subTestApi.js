@@ -1,10 +1,11 @@
 import axios from "axios";
 
-const GET_ALL_SUBTESTS = "http://localhost:8080/SubTests";
 
-const TestApi = {
-    getByID: (credentials) => axios.get(GET_ALL_SUBTESTS, credentials),
-    getAllByID: (credentials) => axios.get(GET_ALL_SUBTESTS,credentials)
+
+const subTestApi = {
+    getSubTestByTestID: (test) =>{
+        return axios.get(`http://localhost:8080/SubTests/${test}`)
+    }
 };
 
-export default TestApi;
+export default subTestApi;

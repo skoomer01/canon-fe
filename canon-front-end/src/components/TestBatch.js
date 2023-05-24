@@ -61,7 +61,7 @@ function TestBatchPage(){
               <td key={testSet.id}>
                 <div className="test-container">
                   {testSet.tests.map(test => (
-                    <Link key={test.id} to="/testdetailspage" style={{ textDecoration: "none" }}>
+                    <Link key={test.id} to={`/testdetailspage/${test.id}`} testDetails={test.id} style={{ textDecoration: "none" }}>
                     <div
                       key={test.id}
                       className={
