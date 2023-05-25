@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react"
 import testApi from '../apis/testApi.js'
 import subTestApi from "../apis/subTestApi.js";
 import testStepApi from "../apis/testStepApi.js";
+import {Link} from "react-router-dom";
 
 
 function TestDetailsForm({testDetails}) {
@@ -82,7 +83,7 @@ function TestDetailsForm({testDetails}) {
 
                                 <tr key={subtest.id}>
                                     <td>{subtest.id}</td>
-                                    <td>{subtest.subtestName}</td>
+                                    <td><Link key={subtest.id} to={`/SubTestPage/${subtest.id}`} subTestDetails={subtest.id} style={{ textDecoration: "none" }}>{subtest.subtestName}</Link></td>
                                     <td></td>
                                     <td></td>
                                 </tr>

@@ -6,6 +6,7 @@ import LogInPage from './pages/LogInPage'
 import TestDetailsPage from './pages/TestDetailsPage';
 import OverViewPage from "./pages/OverViewPage";
 import TestStepPage from "./pages/TestStepPage";
+import SubTestPage from "./pages/SubTestPage";
 function App() {
   return (
     <div className="App">
@@ -15,6 +16,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/testdetailspage/:id" element={<TestDetailsPage />} />
           <Route path="/LogInPage" element={<LogInPage />} />
+          <Route path="/SubTestPage/:id" element={<SubTestPage />} />
           <Route path="/OverViewPage" element={<OverViewPage />} />
           <Route path="/TestStep/:id" element={<TestStepPage />} />
         </Routes>
