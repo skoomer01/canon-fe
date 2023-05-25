@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import TestStepApi from '../apis/TestStepApi';
+import TestStepApi from '../apis/testStepApi';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
