@@ -8,7 +8,6 @@ function OverViewPage(){
         <TestBatch selectedBranchId={selectedBranchId}/>
       }, [selectedBranchId]);
     const handleBranchSelect = (branchId) => {
-        // Handle the selected branch ID here
         setSelectedBranchId(branchId);
       };
 
