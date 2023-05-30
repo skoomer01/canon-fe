@@ -101,16 +101,7 @@ function TestDetailsForm({testDetails}) {
 
 );
 
-    const id = 4; // Replace with the desired ID value
 
-TestSetAPI.getFailedCounter(id)
-  .then((response) => {
-    console.log(response.data.failedCounter);
-  })
-  .catch(function (error) {
-    console.log(error);
-    alert("lmao");
-  });
 }
 
 export default TestDetailsForm;
