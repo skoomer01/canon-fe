@@ -77,3 +77,20 @@
     color: #fff;
     text-decoration: none;
   }
+  .test-batch-container {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .test-batch-table {
+    max-width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+  
+  .test-batch-table th,
+  .test-batch-table td {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
