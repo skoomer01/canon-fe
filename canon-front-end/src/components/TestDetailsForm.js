@@ -41,7 +41,29 @@ function TestDetailsForm({ testDetails }) {
                 console.log(error);
                 setError(error);
             });
-    }, []);
+    }, [testDetails]);
+
+    const fetchFailedCounter = (subTestId) => {
+        return new Promise((resolve, reject) => {
+            testApi.getFailedCounter(subTestId)
+                .then(response => {
+                    const failedCount = response.data.failedCount;
+                    const updatedSubTests = subTests.map(subtest => {
+                        if (subtest.id === subTestId) {
+                            return { ...subtest, failedCount };
+                        }
+                        return subtest;
+                    });
+                    setSubTests(updatedSubTests);
+                    resolve();
+                })
+                .catch(error => {
+                    console.log(error);
+                    setError(error);
+                    reject(error);
+                });
+        });
+    };
 
     const handleButtonClick = (subTestId) => {
         navigate(`/SubTestPage/${subTestId}`);
@@ -63,27 +85,32 @@ function TestDetailsForm({ testDetails }) {
                 </tr>
                 </thead>
                 <tbody>
-                {subTests.map(subtest => (
-                    <tr key={subtest.id}>
-                        <td>{subtest.id}</td>
-                        <td>{subtest.subtestName}</td>
-                        <td></td>
-                        <td>
-                            <button
-                                onClick={() => handleButtonClick(subtest.id)}
-                                style={{
-                                    width: "100%",
-                                    height: "100%",
-                                    border: "none",
-                                    background: "none",
-                                    cursor: "pointer",
-                                }}
-                            >
-                                Button
-                            </button>
-                        </td>
-                    </tr>
-                ))}
+                {subTests.map(subtest => {
+                    fetchFailedCounter(subtest.id); // Call fetchFailedCounter directly
+
+                    return (
+                        <tr key={subtest.id}>
+                            <td>{subtest.id}</td>
+                            <td>{subtest.subtestName}</td>
+                            <td>{subtest.failedCount}</td>
+
+                            <td>
+                                <button
+                                    onClick={() => handleButtonClick(subtest.id)}
+                                    style={{
+                                        width: "100%",
+                                        height: "100%",
+                                        border: "none",
+                                        background: "none",
+                                        cursor: "pointer",
+                                    }}
+                                >
+                                    Button
+                                </button>
+                            </td>
+                        </tr>
+                    );
+                })}
                 </tbody>
             </table>
         </div>

@@ -9,6 +9,7 @@ const subTestApi = {
     getSubTest: (subtestDetails) => {
         return axios.get(`http://localhost:8080/SubTests/${subtestDetails}`)
     }
+
 };
 
 export default subTestApi;
