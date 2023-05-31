@@ -13,7 +13,7 @@ function SubTestForm({subTestDetails}) {
 
 
     useEffect(() => {
-        subTestApi.getSubTest(1)
+        subTestApi.getSubTest(subTestDetails)
             .then(response => {
                 console.log(response.data);
                 setSubTest(response.data);
