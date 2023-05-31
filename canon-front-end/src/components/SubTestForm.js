@@ -1,29 +1,25 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import subTestApi from "../apis/subTestApi";
 import testStepApi from "../apis/testStepApi";
-import {Link} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import './SubTest.css';
 
-function SubTestForm({subTestDetails}) {
-
+function SubTestForm({ subTestDetails }) {
     const [testSteps, setTestSteps] = useState([]);
     const [subTest, setSubTest] = useState(null);
     const [error, setError] = useState(null);
-
-
-
+    const navigate = useNavigate();
 
     useEffect(() => {
         subTestApi.getSubTest(subTestDetails)
             .then(response => {
                 console.log(response.data);
                 setSubTest(response.data);
-
             })
             .catch(error => {
                 console.log(error);
                 setError(error);
-
-            })
+            });
 
         testStepApi.getTestStepBySubTestID(subTestDetails)
             .then(testStepResponse => {
@@ -33,29 +29,23 @@ function SubTestForm({subTestDetails}) {
             .catch(error => {
                 console.log(error);
                 setError(error);
-
-
-            })
-
+            });
     }, []);
 
-
-
-
+    const handleButtonClick = (testStepId) => {
+        navigate(`/TestStep/${testStepId}`);
+    };
 
     return (
         <div>
             {subTest == null ? (
                 <div>Nothing</div>
-            ):(
+            ) : (
                 <div>asd</div>
             )}
             <table>
-
-
                 <thead>
                 <tr>
-
                     <th>ID</th>
                     <th>Name</th>
                     <th>TestStance</th>
@@ -63,32 +53,32 @@ function SubTestForm({subTestDetails}) {
                 </tr>
                 </thead>
                 <tbody>
-
-
                 {testSteps.map(teststep => (
-
-                        <tr key={teststep.id}>
-                            <td>{teststep.id}</td>
-                            <td><Link key={teststep.id} to={`/TestStep/${teststep.id}`} testStepDetails={teststep.id} style={{ textDecoration: "none" }}>{teststep.testStepName}</Link></td>
-                            <td>{teststep.testResult ? "Passed" : "Failed"}</td>
-                            <td>{teststep.description}</td>
-
-                        </tr>
-
-
-                    )
-                )}
-
-
-
+                    <tr key={teststep.id}>
+                        <td>{teststep.id}</td>
+                        <td>{teststep.testStepName}</td>
+                        <td className={teststep.testResult ? "passed" : "failed"}>{teststep.testResult ? "Passed" : "Failed"}</td>
+                        <td>{teststep.description}</td>
+                        <td>
+                            <button
+                                onClick={() => handleButtonClick(teststep.id)}
+                                style={{
+                                    width: "100%",
+                                    height: "100%",
+                                    border: "none",
+                                    background: "none",
+                                    cursor: "pointer",
+                                }}
+                            >
+                                Button
+                            </button>
+                        </td>
+                    </tr>
+                ))}
                 </tbody>
             </table>
         </div>
-
-
     );
-
-
 }
 
 export default SubTestForm;
