@@ -1,63 +1,57 @@
 import React, { useState, useEffect } from 'react';
 import './TestSet.css';
-import testSetApi from "../apis/testSetApi";
-import testSetData from '../mockdata/mock-data.json';
-
 import { Card, CardBody, CardTitle} from 'reactstrap';
-import { Link } from 'react-router-dom';
+import RegrTestApi from '../apis/regrTestApi';
+import andrei from '../apis/andrei';
+function TestSet(props) {
+const [tests, setTests] = useState([]);
+const [testsPerTestSet, setTestsPerTestSet] = useState([[]]);
 
-function TestSetPage() {
-  const [testSets, setTestSets] = useState([]);
-
-  const getLatestSets = () => {
-    testSetApi.getLatestTestSets()
-        .then((response) => setTestSets(response.data.latestTestSets))
-        .catch((error) => console.log(error))
+const fetchTestsByTestSetId = () => {
+  const updatedTestDatas = {};
+  console.log(props.testSets);
+  // props.testSets.forEach((testSet) => {
+  //   console.log(testSet.id);
+  //   andrei.testStuff(testSet.id)
+  //         .then((response) => {
+  //             console.log("response");
+  //             console.log(response);
+  //             const latestTestsData = response.data.latestTests;
+  //             console.log("LATEST TESTS DATA");
+  //             console.log(latestTestsData);
+  //             updatedTestDatas[testSet.id] = latestTestsData;
+  //             setTests(updatedTestDatas);
+  //         })
+  //         .catch((error) => console.log(error));
+  // });
+  props.testSets.forEach(testSet => {
+    andrei.getAllTestsByTestSetId(testSet.id)
+      .then((response) =>{
+        console.log("response");
+        console.log(response);
+        setTestsPerTestSet(response.data.latestTests);
+        tests[testSet.id]=testsPerTestSet;
+      })
+      .catch((error) => console.log(error));
+  });
 };
 
   useEffect(() => {
-    getLatestSets();
-  }, []);
-
-  const getTestSetStatus = (testSet) => {
-    const statuses = testSet.tests.map(test => test.status);
-    if (statuses.includes("Failed")) {
-      return "Failed";
-    } else if (statuses.includes("Passed")) {
-      return "Passed";
-    } else {
-      return "Not Run";
-    }
-  };
-
-  const getCardColor = (status) => {
-    if (status === "Passed") {
-      return "bg-success";
-    } else if (status === "Failed") {
-      return "bg-danger";
-    } else {
-      return "";
-    }
-  };
+    console.log("USE EFFECT");
+    fetchTestsByTestSetId();
+  }, [props.testSets]);
 
   return (
     <div className="testset-page">
-      {testSets.map(testSet => (
+      {props.testSets && props.testSets.map(testSet => (
         <div className="testset-column" key={testSet.id}>
-          <h2>
-            Test set {testSet.name}&nbsp;
-            {/* <span className={getTestSetStatus(testSet) === "Passed" ? "text-success" : "text-danger"}>
-              ({testSet.tests.length} tests)
-            </span> */}
-          </h2>
-          {/* {testSet.tests.map(test => (
-            <Link key={test.id} to="/testdetailspage" style={{ textDecoration: "none" }}>
-              <Card className={`mb-3 ${getCardColor(test.status)}`}>
+          <h2>{testSet.name}&nbsp;</h2>
+          {/* {testSet && tests && tests[testSet.id].map((test) =>(
+              <Card>
                 <CardBody>
-                  <CardTitle>{test.name}</CardTitle>
+                  <CardTitle>{test.testResult}</CardTitle>
                 </CardBody>
               </Card>
-            </Link>
           ))} */}
         </div>
       ))}
@@ -65,4 +59,4 @@ function TestSetPage() {
   );
 }
 
-export default TestSetPage;
+export default TestSet;
