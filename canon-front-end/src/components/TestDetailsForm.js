@@ -3,19 +3,22 @@ import testApi from '../apis/testApi.js';
 import subTestApi from "../apis/subTestApi.js";
 import testStepApi from "../apis/testStepApi.js";
 import { useNavigate } from "react-router-dom";
+import TestSetAPI from "../apis/TestSetApi";
+import TestApi from "../apis/testApi.js";
 
 function TestDetailsForm({ testDetails }) {
     const [subTests, setSubTests] = useState([]);
     const [testSteps, setTestSteps] = useState([]);
-    const [test, setTest] = useState(null);
+    const [regressionTest, setRegressionTest] = useState(null);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
+    const [updatedSubTests, setUpdatedSubTests] = useState([]);
 
     useEffect(() => {
         testApi.getTest(testDetails)
             .then(response => {
                 console.log(response.data);
-                setTest(response.data);
+                setRegressionTest(response.data);
             })
             .catch(error => {
                 console.log(error);
@@ -43,27 +46,46 @@ function TestDetailsForm({ testDetails }) {
             });
     }, [testDetails]);
 
-    const fetchFailedCounter = (subTestId) => {
-        return new Promise((resolve, reject) => {
-            testApi.getFailedCounter(subTestId)
-                .then(response => {
-                    const failedCount = response.data.failedCount;
-                    const updatedSubTests = subTests.map(subtest => {
-                        if (subtest.id === subTestId) {
-                            return { ...subtest, failedCount };
-                        }
-                        return subtest;
-                    });
-                    setSubTests(updatedSubTests);
-                    resolve();
-                })
-                .catch(error => {
-                    console.log(error);
-                    setError(error);
-                    reject(error);
-                });
-        });
+
+    useEffect(() => {
+        if (subTests.length > 0) {
+            updateTestsWithFailedCount();
+        }
+    }, []);
+
+
+    const fetchFailedTestStepCount = async (subtestid) => {
+        try {
+            const response = await TestApi.getFailedCounter(subtestid); // Use TestSetAPI.getFailedCounter method
+            return response.data.failedCounter;
+        } catch (error) {
+            console.error('Error fetching failed test step count:', error);
+            return 1;
+        }
     };
+
+    const updateTestsWithFailedCount = async () => {
+        const updatedSubTests = subTests.map((subtest) => ({
+            ...subtest,
+            testStep: [],
+        }));
+
+        for (let i = 0; i < subTests.length; i++) {
+            const subtest = subTests[i];
+            const testSetIndex = updatedSubTests.findIndex((subtest) => subtest.id === subtest.subtestid);
+            if (testSetIndex !== -1) {
+                const failedCount = await fetchFailedTestStepCount(subtest.id);
+                updatedSubTests[testSetIndex].testStep.push({
+                    ...subtest,
+                    failedCount: failedCount,
+                });
+            }
+        }
+
+        setUpdatedSubTests(updatedSubTests);
+    };
+
+
 
     const handleButtonClick = (subTestId) => {
         navigate(`/SubTestPage/${subTestId}`);
@@ -71,10 +93,10 @@ function TestDetailsForm({ testDetails }) {
 
     return (
         <div>
-            {test == null ? (
+            {regressionTest == null ? (
                 <div>Nothing</div>
             ) : (
-                <div>{test.testName}</div>
+                <div>{regressionTest.testName}</div>
             )}
             <table>
                 <thead>
@@ -85,13 +107,18 @@ function TestDetailsForm({ testDetails }) {
                 </tr>
                 </thead>
                 <tbody>
-                {subTests.map(subtest => {
-                    fetchFailedCounter(subtest.id); // Call fetchFailedCounter directly
+                {updatedSubTests.map(subtest => {
 
                     return (
                         <tr key={subtest.id}>
                             <td>{subtest.id}</td>
-                            <td>{subtest.subtestName}</td>
+                            {subtest.testStep.map((test) => (
+
+                                        <div className="failed-step-count">
+                                            {test.failedCount}
+                                        </div>
+
+                            ))}
                             <td>{subtest.failedCount}</td>
 
                             <td>
