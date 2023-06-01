@@ -3,22 +3,19 @@ import testApi from '../apis/testApi.js';
 import subTestApi from "../apis/subTestApi.js";
 import testStepApi from "../apis/testStepApi.js";
 import { useNavigate } from "react-router-dom";
-import TestSetAPI from "../apis/TestSetApi";
-import TestApi from "../apis/testApi.js";
 
 function TestDetailsForm({ testDetails }) {
     const [subTests, setSubTests] = useState([]);
     const [testSteps, setTestSteps] = useState([]);
-    const [regressionTest, setRegressionTest] = useState(null);
+    const [test, setTest] = useState(null);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
-    const [updatedSubTests, setUpdatedSubTests] = useState([]);
 
     useEffect(() => {
         testApi.getTest(testDetails)
             .then(response => {
                 console.log(response.data);
-                setRegressionTest(response.data);
+                setTest(response.data);
             })
             .catch(error => {
                 console.log(error);
@@ -46,46 +43,29 @@ function TestDetailsForm({ testDetails }) {
             });
     }, [testDetails]);
 
-
     useEffect(() => {
-        if (subTests.length > 0) {
-            updateTestsWithFailedCount();
-        }
-    }, []);
-
-
-    const fetchFailedTestStepCount = async (subtestid) => {
-        try {
-            const response = await TestApi.getFailedCounter(subtestid); // Use TestSetAPI.getFailedCounter method
-            return response.data.failedCounter;
-        } catch (error) {
-            console.error('Error fetching failed test step count:', error);
-            return 1;
-        }
-    };
-
-    const updateTestsWithFailedCount = async () => {
-        const updatedSubTests = subTests.map((subtest) => ({
-            ...subtest,
-            testStep: [],
-        }));
-
-        for (let i = 0; i < subTests.length; i++) {
-            const subtest = subTests[i];
-            const testSetIndex = updatedSubTests.findIndex((subtest) => subtest.id === subtest.subtestid);
-            if (testSetIndex !== -1) {
-                const failedCount = await fetchFailedTestStepCount(subtest.id);
-                updatedSubTests[testSetIndex].testStep.push({
-                    ...subtest,
-                    failedCount: failedCount,
+        const fetchFailedCounter = async (subTestId) => {
+            try {
+                const response = await testApi.getFailedCounter(subTestId);
+                const failedCount = response.data.failedCount;
+                setSubTests(prevSubTests => {
+                    return prevSubTests.map(subtest => {
+                        if (subtest.id === subTestId) {
+                            return { ...subtest, failedCount };
+                        }
+                        return subtest;
+                    });
                 });
+            } catch (error) {
+                console.log(error);
+                setError(error);
             }
-        }
+        };
 
-        setUpdatedSubTests(updatedSubTests);
-    };
-
-
+        subTests.forEach(subtest => {
+            fetchFailedCounter(subtest.id);
+        });
+    }, [subTests]);
 
     const handleButtonClick = (subTestId) => {
         navigate(`/SubTestPage/${subTestId}`);
@@ -93,10 +73,10 @@ function TestDetailsForm({ testDetails }) {
 
     return (
         <div>
-            {regressionTest == null ? (
+            {test == null ? (
                 <div>Nothing</div>
             ) : (
-                <div>{regressionTest.testName}</div>
+                <div>{test.testName}</div>
             )}
             <table>
                 <thead>
@@ -107,37 +87,27 @@ function TestDetailsForm({ testDetails }) {
                 </tr>
                 </thead>
                 <tbody>
-                {updatedSubTests.map(subtest => {
-
-                    return (
-                        <tr key={subtest.id}>
-                            <td>{subtest.id}</td>
-                            {subtest.testStep.map((test) => (
-
-                                        <div className="failed-step-count">
-                                            {test.failedCount}
-                                        </div>
-
-                            ))}
-                            <td>{subtest.failedCount}</td>
-
-                            <td>
-                                <button
-                                    onClick={() => handleButtonClick(subtest.id)}
-                                    style={{
-                                        width: "100%",
-                                        height: "100%",
-                                        border: "none",
-                                        background: "none",
-                                        cursor: "pointer",
-                                    }}
-                                >
-                                    Button
-                                </button>
-                            </td>
-                        </tr>
-                    );
-                })}
+                {subTests.map(subtest => (
+                    <tr key={subtest.id}>
+                        <td>{subtest.id}</td>
+                        <td>{subtest.subtestName}</td>
+                        <td>{subtest.failedCount}</td>
+                        <td>
+                            <button
+                                onClick={() => handleButtonClick(subtest.id)}
+                                style={{
+                                    width: "100%",
+                                    height: "100%",
+                                    border: "none",
+                                    background: "none",
+                                    cursor: "pointer",
+                                }}
+                            >
+                                Button
+                            </button>
+                        </td>
+                    </tr>
+                ))}
                 </tbody>
             </table>
         </div>
