@@ -12,18 +12,13 @@ function NavBar() {
         },
         {
             id: 2,
-            path: "/testdetailspage",
-            text: "Test details"
+            path: "/OverViewPage",
+            text: "Overview"
         },
         {
             id: 3,
             path: "/logInPage",
             text: "Log in"
-        },
-        {
-            id: 4,
-            path: "/OverViewPage",
-            text: "Over view page"
         }
     ]
 
