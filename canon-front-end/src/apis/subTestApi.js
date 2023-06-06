@@ -8,6 +8,9 @@ const subTestApi = {
     },
     getSubTest: (subtestDetails) => {
         return axios.get(`http://localhost:8080/SubTests/${subtestDetails}`)
+    },
+    getFailedCounter: (id) => {
+        return axios.get(`http://localhost:8080/SubTests/failedCounter/${id}`)
     }
 
 };

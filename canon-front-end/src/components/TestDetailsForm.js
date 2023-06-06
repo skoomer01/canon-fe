@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 function TestDetailsForm({ testDetails }) {
     const [subTests, setSubTests] = useState([]);
+    const [subTestFailed, setSubTestFailed] = useState({});
     const [testSteps, setTestSteps] = useState([]);
     const [test, setTest] = useState(null);
     const [error, setError] = useState(null);
@@ -43,33 +44,30 @@ function TestDetailsForm({ testDetails }) {
             });
     }, [testDetails]);
 
-    useEffect(() => {
-        const fetchFailedCounter = async (subTestId) => {
-            try {
-                const response = await testApi.getFailedCounter(subTestId);
-                const failedCount = response.data.failedCount;
-                setSubTests(prevSubTests => {
-                    return prevSubTests.map(subtest => {
-                        if (subtest.id === subTestId) {
-                            return { ...subtest, failedCount };
-                        }
-                        return subtest;
-                    });
-                });
-            } catch (error) {
+    const getFailedTestBySubTest = (subTestId) => {
+        subTestApi.getFailedCounter(subTestId)
+            .then(response => {
+                const failedCounter = response.data.failedCounter;
+                setSubTestFailed(prevState => ({
+                    ...prevState,
+                    [subTestId]: failedCounter
+                }));
+            })
+            .catch(error => {
                 console.log(error);
                 setError(error);
-            }
-        };
-
-        subTests.forEach(subtest => {
-            fetchFailedCounter(subtest.id);
-        });
-    }, [subTests]);
+            });
+    };
 
     const handleButtonClick = (subTestId) => {
         navigate(`/SubTestPage/${subTestId}`);
     };
+
+    useEffect(() => {
+        subTests.forEach(subtest => {
+            getFailedTestBySubTest(subtest.id);
+        });
+    }, [subTests]);
 
     return (
         <div>
@@ -83,7 +81,7 @@ function TestDetailsForm({ testDetails }) {
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
-                    <th>Test Result</th>
+                    <th>Failed Counter</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -91,7 +89,7 @@ function TestDetailsForm({ testDetails }) {
                     <tr key={subtest.id}>
                         <td>{subtest.id}</td>
                         <td>{subtest.subtestName}</td>
-                        <td>{subtest.failedCount}</td>
+                        <td>{subTestFailed[subtest.id]}</td>
                         <td>
                             <button
                                 onClick={() => handleButtonClick(subtest.id)}
