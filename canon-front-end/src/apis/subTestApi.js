@@ -11,6 +11,9 @@ const subTestApi = {
     },
     getFailedCounter: (id) => {
         return axios.get(`http://localhost:8080/SubTests/failedCounter/${id}`)
+    },
+    getTotalTestSteps: (id) => {
+        return axios.get(`http://localhost:8080/SubTests/totalCounter/${id}`)
     }
 
 };

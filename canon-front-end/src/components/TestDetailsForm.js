@@ -3,57 +3,84 @@ import testApi from '../apis/testApi.js';
 import subTestApi from "../apis/subTestApi.js";
 import testStepApi from "../apis/testStepApi.js";
 import { useNavigate } from "react-router-dom";
+import testSetApi from "../apis/TestSetApi";
 
 function TestDetailsForm({ testDetails }) {
     const [subTests, setSubTests] = useState([]);
     const [subTestFailed, setSubTestFailed] = useState({});
-    const [testSteps, setTestSteps] = useState([]);
+    const [allTestSteps, setAllTestSteps] = useState({});
     const [test, setTest] = useState(null);
+    const [testSet, setTestSet] = useState(null);
+    const [testBatch, setTestBatch] = useState(null);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
-        testApi.getTest(testDetails)
-            .then(response => {
+        testApi
+            .getTest(testDetails)
+            .then((response) => {
                 console.log(response.data);
                 setTest(response.data);
+                return response.data.testSetId;
             })
-            .catch(error => {
+            .then((testSetId) => {
+                testSetApi
+                    .getTestSet(testSetId)
+                    .then((response) => {
+                        console.log(testSetId);
+                        console.log(response.data);
+                        setTestSet(response.data);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                        setError(error);
+                    });
+            })
+            .catch((error) => {
                 console.log(error);
                 setError(error);
             });
 
-        subTestApi.getSubTestByTestID(testDetails)
-            .then(subtestsResponse => {
+
+
+
+        subTestApi
+            .getSubTestByTestID(testDetails)
+            .then((subtestsResponse) => {
                 console.log(subtestsResponse.data.subTests);
                 setSubTests(subtestsResponse.data.subTests);
             })
-            .catch(error => {
+            .catch((error) => {
                 console.log(error);
                 setError(error);
             });
 
-        testStepApi.getTestStepBySubTestID()
-            .then(testStepResponse => {
-                console.log(testStepResponse.data.testSteps);
-                setTestSteps(testStepResponse.data.testSteps);
-            })
-            .catch(error => {
-                console.log(error);
-                setError(error);
-            });
     }, [testDetails]);
 
     const getFailedTestBySubTest = (subTestId) => {
-        subTestApi.getFailedCounter(subTestId)
-            .then(response => {
+        subTestApi
+            .getFailedCounter(subTestId)
+            .then((response) => {
                 const failedCounter = response.data.failedCounter;
-                setSubTestFailed(prevState => ({
+                setSubTestFailed((prevState) => ({
                     ...prevState,
-                    [subTestId]: failedCounter
+                    [subTestId]: failedCounter,
                 }));
             })
-            .catch(error => {
+            .catch((error) => {
+                console.log(error);
+                setError(error);
+            });
+        subTestApi
+            .getTotalTestSteps(subTestId)
+            .then((response) => {
+                const totalTestSteps = response.data.failedCounter;
+                setAllTestSteps((prevState) => ({
+                    ...prevState,
+                    [subTestId]: totalTestSteps,
+                }));
+            })
+            .catch((error) => {
                 console.log(error);
                 setError(error);
             });
@@ -64,32 +91,42 @@ function TestDetailsForm({ testDetails }) {
     };
 
     useEffect(() => {
-        subTests.forEach(subtest => {
+        subTests.forEach((subtest) => {
             getFailedTestBySubTest(subtest.id);
         });
     }, [subTests]);
 
     return (
         <div>
+
+
+
+            {testSet == null ? (
+                <div>Nothing</div>
+            ) : (
+                <div>testSet: {testSet.name}</div>
+            )}
             {test == null ? (
                 <div>Nothing</div>
             ) : (
-                <div>{test.testName}</div>
+                <div>Test: {test.testName}</div>
             )}
             <table>
                 <thead>
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
-                    <th>Failed Counter</th>
+                    <th>Failed / Total Tests</th>
                 </tr>
                 </thead>
                 <tbody>
-                {subTests.map(subtest => (
+                {subTests.map((subtest) => (
                     <tr key={subtest.id}>
                         <td>{subtest.id}</td>
                         <td>{subtest.subtestName}</td>
-                        <td>{subTestFailed[subtest.id]}</td>
+                        <td className={subTestFailed[subtest.id] > 0 ? "failed" : "passed"}>
+                            {subTestFailed[subtest.id]}/{allTestSteps[subtest.id]}
+                        </td>
                         <td>
                             <button
                                 onClick={() => handleButtonClick(subtest.id)}
