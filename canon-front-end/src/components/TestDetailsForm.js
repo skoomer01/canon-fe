@@ -4,6 +4,8 @@ import subTestApi from "../apis/subTestApi.js";
 import testStepApi from "../apis/testStepApi.js";
 import { useNavigate } from "react-router-dom";
 import testSetApi from "../apis/TestSetApi";
+import testBatchApi from "../apis/testBatchApi";
+import branchApi from "../apis/BranchApi";
 
 function TestDetailsForm({ testDetails }) {
     const [subTests, setSubTests] = useState([]);
@@ -14,6 +16,7 @@ function TestDetailsForm({ testDetails }) {
     const [testBatch, setTestBatch] = useState(null);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
+    const [branch, setBranch] = useState(null);
 
     useEffect(() => {
         testApi
@@ -27,9 +30,34 @@ function TestDetailsForm({ testDetails }) {
                 testSetApi
                     .getTestSet(testSetId)
                     .then((response) => {
-                        console.log(testSetId);
                         console.log(response.data);
                         setTestSet(response.data);
+                        return response.data.testBatchId;
+                    })
+                    .then((testBatchId) => {
+                        testBatchApi
+                            .getByID(testBatchId)
+                            .then((response) => {
+                                console.log(response.data);
+                                setTestBatch(response.data);
+                                return response.data.branchId;
+                            })
+                            .then((branchId) => {
+                                branchApi
+                                    .getBranchByID(branchId)
+                                    .then((response) => {
+                                        setBranch(response.data);
+                                        console.log(response.data);
+                                    })
+                                    .catch((error) => {
+                                        console.log(error);
+                                        setError(error);
+                                    });
+                            }) // <-- Added closing parenthesis here
+                            .catch((error) => {
+                                console.log(error);
+                                setError(error);
+                            });
                     })
                     .catch((error) => {
                         console.log(error);
@@ -41,9 +69,6 @@ function TestDetailsForm({ testDetails }) {
                 setError(error);
             });
 
-
-
-
         subTestApi
             .getSubTestByTestID(testDetails)
             .then((subtestsResponse) => {
@@ -54,8 +79,8 @@ function TestDetailsForm({ testDetails }) {
                 console.log(error);
                 setError(error);
             });
-
     }, [testDetails]);
+
 
     const getFailedTestBySubTest = (subTestId) => {
         subTestApi
@@ -99,8 +124,16 @@ function TestDetailsForm({ testDetails }) {
     return (
         <div>
 
-
-
+            {branch == null ? (
+                <div>Nothing</div>
+            ) : (
+                <div>Branch: {branch.branchName}</div>
+            )}
+            {testBatch == null ? (
+                <div>Nothing</div>
+            ) : (
+                <div>Version: {testBatch.version}</div>
+            )}
             {testSet == null ? (
                 <div>Nothing</div>
             ) : (
