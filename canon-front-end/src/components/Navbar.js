@@ -12,8 +12,8 @@ function NavBar() {
         },
         {
             id: 2,
-            path: "/testdetailspage",
-            text: "Test details"
+            path: "/OverViewPage",
+            text: "Overview"
         },
         {
             id: 3,

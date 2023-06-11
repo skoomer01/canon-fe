@@ -1,16 +1,16 @@
 import React from "react"
-import TestDetailsForm from "../components/TestDetailsForm";
 import {useParams} from "react-router-dom";
+import SubTestForm from "../components/SubTestForm";
 
-const TestDetailsPage = () => {
+const SubTestPage = () => {
     const { id } = useParams();
 
 
     return (
 
         <div className="App">
-            <TestDetailsForm testDetails={id}/>
+            <SubTestForm subTestDetails={id}/>
         </div>
     );
 }
-export default TestDetailsPage;
+export default SubTestPage;
