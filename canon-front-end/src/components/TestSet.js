@@ -1,61 +1,66 @@
 import React, { useState, useEffect } from 'react';
 import './TestSet.css';
-import testSetData from '../mockdata/mock-data.json';
+import { Card, CardBody, CardTitle, Container } from 'reactstrap';
+import TestSetApi from '../apis/TestSetApi';
 
-import { Card, CardBody, CardTitle, CardText, CardHeader } from 'reactstrap';
-import { Link } from 'react-router-dom';
-
-function TestSetPage() {
-  const [testSets, setTestSets] = useState([]);
+function TestSet(props) {
+  const [tests, setTests] = useState([]);
+  const [testsPerTestSet, setTestsPerTestSet] = useState([[]]);
 
   useEffect(() => {
-    setTestSets(testSetData);
-  }, []);
+    fetchTestsByTestSetId();
+  }, [props.testSets]);
 
-  const getTestSetStatus = (testSet) => {
-    const statuses = testSet.tests.map(test => test.status);
-    if (statuses.includes("Failed")) {
-      return "Failed";
-    } else if (statuses.includes("Passed")) {
-      return "Passed";
-    } else {
-      return "Not Run";
+  const fetchTestsByTestSetId = async () => {
+    const updatedTestDatas = {};
+
+    for (const testSet of props.testSets) {
+      try {
+        const response1 = await TestSetApi.getLatestTestsByTestSet(testSet.id);
+        const latestTestsData = response1.data.latestTests;
+        updatedTestDatas[testSet.id] = latestTestsData;
+
+        const response2 = await TestSetApi.getAllTestsByTestSetId(testSet.id);
+        const testsPerTestSet = response2.data.latestTests;
+        setTestsPerTestSet(testsPerTestSet);
+        tests[testSet.id] = testsPerTestSet;
+      } catch (error) {
+        console.log(error);
+      }
     }
-  };
 
-  const getCardColor = (status) => {
-    if (status === "Passed") {
-      return "bg-success";
-    } else if (status === "Failed") {
-      return "bg-danger";
-    } else {
-      return "";
+    try {
+      setTests(updatedTestDatas);
+    } catch (error) {
+      console.log(error);
     }
   };
 
   return (
-    <div className="testset-page">
-      {testSets.map(testSet => (
-        <div className="testset-column" key={testSet.id}>
-          <h2>
-            {testSet.name}&nbsp;
-            <span className={getTestSetStatus(testSet) === "Passed" ? "text-success" : "text-danger"}>
-              ({testSet.tests.length} tests)
-            </span>
-          </h2>
-          {testSet.tests.map(test => (
-            <Link key={test.id} to={`/testdetailspage/${test.id}`} testDetails={test.id} style={{ textDecoration: "none" }}>
-              <Card className={`mb-3 ${getCardColor(test.status)}`}>
-                <CardBody>
-                  <CardTitle>{test.name}</CardTitle>
-                </CardBody>
-              </Card>
-            </Link>
-          ))}
-        </div>
-      ))}
-    </div>
+    <Container className="testset-page">
+      {props.testSets &&
+        props.testSets.map((testSet) => (
+          <div className="testset-column" key={testSet.id}>
+            <h2>{testSet.name}&nbsp;</h2>
+            {testSet &&
+              tests &&
+              tests[testSet.id] &&
+              tests[testSet.id].map((test) => (
+                <Card
+                  key={test.id}
+                  //className={test.testName.toString() === 'true' ? 'bg-success' : 'bg-danger'}
+                >
+                  <CardBody>
+                    <CardTitle>
+                      {test.testName.toString() /*=== 'true' ? 'Passed' : 'Failed'*/}
+                    </CardTitle>
+                  </CardBody>
+                </Card>
+              ))}
+          </div>
+        ))}
+    </Container>
   );
 }
 
-export default TestSetPage;
+export default TestSet;
