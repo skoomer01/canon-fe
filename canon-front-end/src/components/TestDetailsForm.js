@@ -14,9 +14,10 @@ function TestDetailsForm({ testDetails }) {
     const [test, setTest] = useState(null);
     const [testSet, setTestSet] = useState(null);
     const [testBatch, setTestBatch] = useState(null);
+    const [branch, setBranch] = useState(null);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
-    const [branch, setBranch] = useState(null);
+
 
     useEffect(() => {
         testApi
