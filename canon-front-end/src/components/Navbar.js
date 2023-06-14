@@ -19,6 +19,11 @@ function NavBar() {
             id: 3,
             path: "/logInPage",
             text: "Log in"
+        },
+        {
+            id: 4,
+            path: "/search",
+            text: "Search"
         }
     ]
 
