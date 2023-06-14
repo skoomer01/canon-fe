@@ -7,6 +7,7 @@ import TestDetailsPage from './pages/TestDetailsPage';
 import OverViewPage from "./pages/OverViewPage";
 import TestStepPage from "./pages/TestStepPage";
 import SubTestPage from "./pages/SubTestPage";
+import SearchPage from "./pages/SearchPage";
 function App() {
   return (
     <div className="App">
@@ -19,6 +20,7 @@ function App() {
           <Route path="/SubTestPage/:id" element={<SubTestPage />} />
           <Route path="/OverViewPage" element={<OverViewPage />} />
           <Route path="/TestStep/:id" element={<TestStepPage />} />
+          <Route path="/search" element={<SearchPage />} />
         </Routes>
       </Router>
     </div>

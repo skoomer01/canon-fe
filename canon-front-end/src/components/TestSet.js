@@ -1,61 +1,89 @@
 import React, { useState, useEffect } from 'react';
 import './TestSet.css';
-import testSetData from '../mockdata/mock-data.json';
-
-import { Card, CardBody, CardTitle, CardText, CardHeader } from 'reactstrap';
+import { Card, CardBody, CardTitle, Container } from 'reactstrap';
+import TestSetApi from '../apis/TestSetApi';
 import { Link } from 'react-router-dom';
 
-function TestSetPage() {
-  const [testSets, setTestSets] = useState([]);
+function TestSet(props) {
+  const [tests, setTests] = useState([]);
+  const [testsPerTestSet, setTestsPerTestSet] = useState([[]]);
+  const [failedTestCounts, setFailedTestCounts] = useState({});
 
   useEffect(() => {
-    setTestSets(testSetData);
-  }, []);
+    fetchTestsByTestSetId();
+  }, [props.testSets]);
 
-  const getTestSetStatus = (testSet) => {
-    const statuses = testSet.tests.map(test => test.status);
-    if (statuses.includes("Failed")) {
-      return "Failed";
-    } else if (statuses.includes("Passed")) {
-      return "Passed";
-    } else {
-      return "Not Run";
+  const fetchTestsByTestSetId = async () => {
+    const updatedTestDatas = {};
+    const updatedFailedTestCounts = {};
+
+    for (const testSet of props.testSets) {
+      try {
+        const response1 = await TestSetApi.getLatestTestsByTestSet(testSet.id);
+        const latestTestsData = response1.data.latestTests;
+        updatedTestDatas[testSet.id] = latestTestsData;
+
+        const response2 = await TestSetApi.getAllTestsByTestSetId(testSet.id);
+        const testsPerTestSet = response2.data.latestTests;
+        setTestsPerTestSet(testsPerTestSet);
+        tests[testSet.id] = testsPerTestSet;
+
+        const failedCount = await fetchFailedTestStepCount(testSet.id);
+        updatedFailedTestCounts[testSet.id] = failedCount;
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    try {
+      setTests(updatedTestDatas);
+      setFailedTestCounts(updatedFailedTestCounts);
+    } catch (error) {
+      console.log(error);
     }
   };
 
-  const getCardColor = (status) => {
-    if (status === "Passed") {
-      return "bg-success";
-    } else if (status === "Failed") {
-      return "bg-danger";
-    } else {
-      return "";
+  const fetchFailedTestStepCount = async (testId) => {
+    try {
+      const response = await TestSetApi.getFailedCounter(testId); // Use TestSetAPI.getFailedCounter method
+      return response.data.failedCounter;
+    } catch (error) {
+      console.error('Error fetching failed test step count:', error);
+      return 1;
     }
   };
 
   return (
-    <div className="testset-page">
-      {testSets.map(testSet => (
-        <div className="testset-column" key={testSet.id}>
-          <h2>
-            {testSet.name}&nbsp;
-            <span className={getTestSetStatus(testSet) === "Passed" ? "text-success" : "text-danger"}>
-              ({testSet.tests.length} tests)
-            </span>
-          </h2>
-          {testSet.tests.map(test => (
-            <Link key={test.id} to={`/testdetailspage/${test.id}`} testDetails={test.id} style={{ textDecoration: "none" }}>
-              <Card className={`mb-3 ${getCardColor(test.status)}`}>
-                <CardBody>
-                  <CardTitle>{test.name}</CardTitle>
-                </CardBody>
-              </Card>
-            </Link>
-          ))}
-        </div>
-      ))}
-    </div>
+    <Container className="testset-page">
+      {props.testSets &&
+        props.testSets.map((testSet) => (
+          <div className="testset-column" key={testSet.id}>
+            <h2>{testSet.name}&nbsp;</h2>
+            {testSet && tests && tests[testSet.id] && (
+              <div>Total Failed Tests: {failedTestCounts[testSet.id]}</div>
+            )}
+            {testSet &&
+              tests &&
+              tests[testSet.id] &&
+              tests[testSet.id].map((test) => (
+                <Card key={test.id}>
+                  <CardBody>
+                    <Link key={test.id} to={`/testdetailspage/${test.id}`} testDetails={test.id} className='pageLink'>
+                      <div key={test.id} className={test.failedCount > 0 ? 'bg-danger' : 'bg-success'}>
+                        {test.failedCount > 0 && (
+                          <div className="failed-step-count">
+                            {test.failedCount}
+                          </div>
+                        )}
+                      </div>
+                    </Link>
+                    <CardTitle>{test.testName.toString()}</CardTitle>
+                  </CardBody>
+                </Card>
+              ))}
+          </div>
+        ))}
+    </Container>
   );
 }
-
-export default TestSetPage;
+export default TestSet;
