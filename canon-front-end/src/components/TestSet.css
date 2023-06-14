@@ -5,7 +5,7 @@
 }
 
 .testset-column {
-  flex: 0 0 calc(100% / 5);
+  flex: 0 0 calc(100% / 7);
   padding: 10px;
   box-sizing: border-box;
   background-color: #e3e3e3;
@@ -32,4 +32,8 @@
   font-weight: bold;
   margin-bottom: 5px;
   color: #000000;
+}
+
+.pageLink{
+  padding: 10px;
 }
