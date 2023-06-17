@@ -5,7 +5,7 @@
 }
 
 .testset-column {
-  flex: 0 0 calc(100% / 7);
+  flex: 0 0 calc(100% / 6);
   padding: 10px;
   box-sizing: border-box;
   background-color: #e3e3e3;

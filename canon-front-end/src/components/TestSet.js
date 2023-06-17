@@ -8,10 +8,42 @@ function TestSet(props) {
   const [tests, setTests] = useState([]);
   const [testsPerTestSet, setTestsPerTestSet] = useState([[]]);
   const [failedTestCounts, setFailedTestCounts] = useState({});
+  const [updatedTestSets, setUpdatedTestSets] = useState([]);
 
   useEffect(() => {
     fetchTestsByTestSetId();
   }, [props.testSets]);
+
+  useEffect(() => {
+    if (tests.length > 0) {
+      updateTestSetsWithTestsAndFailedCount();
+    }
+  }, [tests]);
+
+  useEffect(() => {
+    console.log("kkk" + JSON.stringify(updatedTestSets));
+  },[updatedTestSets])
+
+  const updateTestSetsWithTestsAndFailedCount = async () => {
+    const updatedTestSets = props.testSets.map((testSet) => ({
+      ...testSet,
+      regressionTests: [],
+    }));
+
+    for (let i = 0; i < tests.length; i++) {
+      const test = tests[i];
+      const testSetIndex = updatedTestSets.findIndex((testSet) => testSet.id === test.testSetId);
+      if (testSetIndex !== -1) {
+        const failedCount = await fetchFailedTestStepCount(test.id);
+        updatedTestSets[testSetIndex].regressionTests.push({
+          ...test,
+          failedCount: failedCount,
+        });
+      }
+    }
+
+    setUpdatedTestSets(updatedTestSets);
+  };
 
   const fetchTestsByTestSetId = async () => {
     const updatedTestDatas = {};
@@ -60,7 +92,7 @@ function TestSet(props) {
           <div className="testset-column" key={testSet.id}>
             <h2>{testSet.name}&nbsp;</h2>
             {testSet && tests && tests[testSet.id] && (
-              <div>Total Failed Tests: {failedTestCounts[testSet.id]}</div>
+              <h5>Total Failed Tests: {failedTestCounts[testSet.id]}</h5>
             )}
             {testSet &&
               tests &&
