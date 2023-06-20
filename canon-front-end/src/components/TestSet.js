@@ -1,52 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import './TestSet.css';
-// import mockData from '../mockdata/mock-data2.json';
-// import BranchAPI from "../apis/BranchApi";
-// import TestBatchAPI from "../apis/testBatchApi"
 import TestSetAPI from "../apis/TestSetApi"
-// import { Card, CardBody, CardTitle, Container } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
 function TestSet(props) {
-  // const [testBatches, setTestBatches] = useState([]);
-  // const [testSets, setTestSets] = useState([]);
   const [testData, setTestData] = useState([]);
   const [updatedTestSets, setUpdatedTestSets] = useState([]);
-  // const [updatedTestBatches, setUpdatedTestBatches] = useState([]);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       if (selectedBranchId !== 0) {
-  //         const response = await BranchAPI.getAllTestBatchesFromABranch(selectedBranchId);
-  //         setTestBatches(response.data.testBatchList);
-  //       } else {
-  //         setTestBatches([]); // Reset test batches when no branch is selected
-  //       }
-  //     } catch (error) {
-  //       console.log("Failed to fetch test batches:", error);
-  //     }
-  //   };
-  //   fetchData();
-  // }, [selectedBranchId]);
-
-  // useEffect(() => {
-  //   const fetchTestSets = async () => {
-  //     const testSetsPromises = testBatches.map((testBatch) =>
-  //       TestBatchAPI.getAllTestSetsFromABatch(testBatch.id)
-  //     );
-
-  //     try {
-  //       const testSetsResponses = await Promise.all(testSetsPromises);
-  //       const testSetsData = testSetsResponses.map((response) => response.data.testSetList);
-  //       setTestSets(testSetsData.flat());
-  //     } catch (error) {
-  //       console.error('Error fetching test sets:', error);
-  //     }
-  //   };
-
-  //   fetchTestSets();
-  // }, [testBatches]);
 
   useEffect(() => {
     const fetchTests = async () => {
@@ -95,41 +54,9 @@ function TestSet(props) {
     }
   }, [testData]);
 
-  // useEffect(() => {
-  //   console.log("kkk" + JSON.stringify(updatedTestSets));
-  // }, [updatedTestSets])
-
-  // const updateTestBatchesWithTestSets = () => {
-  //   const updatedTestBatches = testBatches.map((testBatch) => ({
-  //     ...testBatch,
-  //     testSets: [],
-  //   }));
-
-  //   updatedTestSets.forEach((testSet) => {
-  //     const testBatchIndex = updatedTestBatches.findIndex(
-  //       (testBatch) => testBatch.id === testSet.testBatchId
-  //     );
-  //     if (testBatchIndex !== -1) {
-  //       updatedTestBatches[testBatchIndex].testSets.push(testSet);
-  //     }
-  //   });
-
-  //   setUpdatedTestBatches(updatedTestBatches);
-  // };
-
-  // useEffect(() => {
-  //   if (updatedTestSets.length > 0) {
-  //     updateTestBatchesWithTestSets();
-  //   }
-  // }, [updatedTestSets, testBatches]);
-
-  // useEffect(() => {
-  //   console.log(JSON.stringify(updatedTestBatches));
-  // }, [updatedTestBatches]);
-
   const fetchFailedTestStepCount = async (testId) => {
     try {
-      const response = await TestSetAPI.getFailedCounter(testId); // Use TestSetAPI.getFailedCounter method
+      const response = await TestSetAPI.getFailedCounter(testId);
       return response.data.failedCounter;
     } catch (error) {
       console.error('Error fetching failed test step count:', error);
@@ -137,13 +64,10 @@ function TestSet(props) {
     }
   };
 
-  // if (testBatches.length === 0) {
-  //   return <div>Loading...</div>;
-  // }
   return (
-    <div className="test-batch">
-      <table>
-        <thead>
+    <div className="batch">
+      <table className='table-design'>
+        <thead className='tableHeader'>
           <tr>
             {updatedTestSets.map((ts) => (
               <th key={ts.id}>Test set name: {ts.name}</th>
@@ -154,7 +78,7 @@ function TestSet(props) {
           {
             <tr key={updatedTestSets.id}>
               {updatedTestSets.map((testSet) => (
-                <td key={testSet.id}>
+                <td className='tableData' key={testSet.id}>
                   <div className="test-cont">
                     {testSet.regressionTests.map((test) => (
                       <Link

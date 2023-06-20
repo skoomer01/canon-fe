@@ -1,12 +1,27 @@
-table {
+.table-design{
   width: 100%;
   border-collapse: collapse;
   table-layout: fixed;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
 }
 
-th,
-td {
+.batch {
+  background-color: #f0f0f0;
+  padding: 50px;
+}
+
+.tableHeader{
+  border-width: 1px !important;
+  border-style: solid !important;
+  padding: 10px;
+  text-align: center;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 23px;
+}
+
+.tableData{
   border-width: 1px !important;
   border-style: solid !important;
   padding: 10px;
