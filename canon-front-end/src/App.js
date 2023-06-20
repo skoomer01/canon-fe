@@ -8,6 +8,7 @@ import OverViewPage from "./pages/OverViewPage";
 import TestStepPage from "./pages/TestStepPage";
 import SubTestPage from "./pages/SubTestPage";
 import SearchPage from "./pages/SearchPage";
+import SimilarErrorsPage from "./pages/SimilarErrorsPage";
 function App() {
   return (
     <div className="App">
@@ -21,6 +22,7 @@ function App() {
           <Route path="/OverViewPage" element={<OverViewPage />} />
           <Route path="/TestStep/:id" element={<TestStepPage />} />
           <Route path="/search" element={<SearchPage />} />
+          <Route path="/SimilarErrorsPage/:id" element={<SimilarErrorsPage />} />
         </Routes>
       </Router>
     </div>
