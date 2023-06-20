@@ -6,6 +6,7 @@ import './SubTest.css';
 import testSetApi from "../apis/TestSetApi";
 import testBatchApi from "../apis/testBatchApi";
 import branchApi from "../apis/BranchApi";
+import testApi from "../apis/testApi";
 
 function SubTestForm({ subTestDetails }) {
     const [testSteps, setTestSteps] = useState([]);
@@ -25,11 +26,11 @@ function SubTestForm({ subTestDetails }) {
                 return response.data.testId;
             })
             .then((testId) => {
-                return testSetApi.getTestSet(testId);
+                return testApi.getTestById(testId);
             })
             .then((response) => {
                 console.log(response.data);
-                setTestSet(response.data);
+                setTest(response.data);
                 return response.data.testSetId;
             })
             .then((testSetId) => {

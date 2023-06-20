@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import "./LogInForm.css";
 import LoginAPI from "../apis/loginApi";
+import { useNavigate } from "react-router-dom";
+
 
 function LoginForm() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate();
+
 
     const handleLogin = (event) => {
         event.preventDefault();
@@ -17,6 +21,9 @@ function LoginForm() {
                 console.log(response.status);
                 console.log(response.data);
                 sessionStorage.setItem("token", response.data.accessToken)
+                navigate('/')
+                
+                window.location.reload();
             })
             .catch(function (error) {
                 sessionStorage.removeItem("token")
