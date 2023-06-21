@@ -1,13 +1,13 @@
 import React, {useEffect, useMemo, useState} from "react";
 import subTestApi from "../apis/subTestApi";
 import testStepApi from "../apis/testStepApi";
-import { useNavigate } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import './SubTest.css';
 import testSetApi from "../apis/TestSetApi";
 import testBatchApi from "../apis/testBatchApi";
 import branchApi from "../apis/BranchApi";
 import testApi from "../apis/testApi";
-import {Box, Typography} from "@mui/material";
+import {Box, Breadcrumbs, Typography} from "@mui/material";
 import {DataGrid} from "@mui/x-data-grid";
 import {grey} from "@mui/material/colors";
 
@@ -112,44 +112,61 @@ function SubTestForm({ subTestDetails }) {
     }, []);
 
 
+    function handleClick(event) {
+        event.preventDefault();
+        console.info('You clicked a breadcrumb.');
+    }
 
 
 
-
-    const handleButtonClick = (testStepId) => {
-        navigate(`/TestStep/${testStepId}`);
-    };
 
     return (
         <div>
-            {branch == null ? (
-                <div>Nothing</div>
-            ) : (
-                <div>Branch: {branch.branchName}</div>
-            )}
-            {testBatch == null ? (
-                <div>Nothing</div>
-            ) : (
-                <div>Version: {testBatch.version}</div>
-            )}
-            {testSet == null ? (
-                <div>Nothing</div>
-            ) : (
-                <div>testSet: {testSet.name}</div>
-            )}
-            {test == null ? (
-                <div>Nothing</div>
-            ) : (
-                <div>Test: {test.testName}</div>
-            )}
-            {subTest == null ? (
-                <div>Nothing</div>
-            ) : (
-                <div>Subtest: {subTest.subtestName}</div>
-            )}
+
+
+
+
+            <div role="presentation" onClick={handleClick}>
+                <Breadcrumbs aria-label="breadcrumb">
+                    <Link
+                        underline="hover"
+                        to={`/OverViewPage`}
+                        style={{ color: 'black', textDecoration: 'none' }}
+                        hover={{ color: 'grey' }}
+                    >
+                        Overview
+                    </Link>
+                    {test == null ? (
+                        <div>Nothing</div>
+                    ) : (
+                    <Link
+                        underline="hover"
+
+                        to={`/testdetailspage/${test.id}`}
+                        style={{ color: 'black', textDecoration: 'none' }}
+                        hover={{ color: 'grey' }}
+                    >
+                        <Typography color="text.primary">{test.testName}</Typography>
+                    </Link>
+                    )}
+
+                    {subTest == null ? (
+                        <div>Nothing</div>
+                    ) : (
+                        <Typography color="text.primary">{subTest.subtestName}</Typography>
+                    )}
+                </Breadcrumbs>
+            </div>
+
+
+
+
+
+
+
             <Box
                 sx={{
-                    height: '60vh',
+                    height: '65vh',
                     width: '60vh',
                     boxShadow: 1,
                     borderRadius: 2,
@@ -170,10 +187,10 @@ function SubTestForm({ subTestDetails }) {
                     component="h3"
                     sx={{ textAlign: 'center', mt: 3, mb: 3 }}
                 >
-                    {test == null ? (
+                    {subTest == null ? (
                         <div>Nothing</div>
                     ) : (
-                        <div>{test.testName}</div>
+                        <div>{subTest.subtestName}</div>
                     )}
                 </Typography>
                 <DataGrid
