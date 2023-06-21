@@ -5,6 +5,7 @@ import Pagination from "@mui/material/Pagination";
 import "./SearchByErrorId.css"; // Import the CSS file
 import SearchByErrorIdPrivate from "./SearchByErrorIdPrivate";
 import TokenManager from "../../security/TokenManager";
+import { useNavigate } from "react-router-dom";
 
 const RESULTS_PER_PAGE = 3;
 
@@ -15,6 +16,7 @@ function SearchByErrorId() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [noResults, setNoResults] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchData();
@@ -64,9 +66,14 @@ function SearchByErrorId() {
     fetchData();
   };
 
+  const handleNavigateToDetails = (id) =>{
+    navigate(`/TestStep/${id}`);
+  }
+
   if(loggedIn === true){
     return (
       <div>
+        
         <div className="search-container">
         <div className="search-header"> 
           <TextField
@@ -78,6 +85,7 @@ function SearchByErrorId() {
             focused = "true"
             style={{ marginRight: '10px', height: '40px' }}
           />
+          
           <Button onClick={handleSearchClick} variant="contained" color="secondary" style={{ height: '55px' }}>
             Search
           </Button>
@@ -106,7 +114,7 @@ function SearchByErrorId() {
                       <p>Test: {result.regressionTest?.testName || "{no value}"}</p>
                       <p>Sub-test: {result.subTest?.subtestName || "{no value}"}</p>
                       <p>Test Step: {result.testStep?.testStepName || "{no value}"}</p>
-                      <Button fullWidth variant="contained" color="secondary">
+                      <Button onClick={() => handleNavigateToDetails(result.testStep.id)} fullWidth variant="contained" color="secondary">
                     View Details
                   </Button>
                     </CardContent>
@@ -174,7 +182,7 @@ function SearchByErrorId() {
                       <p>Test: {result.regressionTest?.testName || "{no value}"}</p>
                       <p>Sub-test: {result.subTest?.subtestName || "{no value}"}</p>
                       <p>Test Step: {result.testStep?.testStepName || "{no value}"}</p>
-                      <Button fullWidth variant="contained" color="secondary">
+                      <Button onClick={() => handleNavigateToDetails(result.testStep?.id)} fullWidth variant="contained" color="secondary">
                     View Details
                   </Button>
                     </CardContent>

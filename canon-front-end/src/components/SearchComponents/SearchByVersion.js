@@ -7,6 +7,7 @@ import SearchByErrorIdPrivate from "./SearchByErrorIdPrivate";
 import TokenManager from "../../security/TokenManager";
 import SearchByCommitPrivate from "./SearchByCommitPrivate";
 import SearchByVersionPrivate from "./SearchByVersionPrivate";
+import { useNavigate } from "react-router-dom";
 
 const RESULTS_PER_PAGE = 3;
 
@@ -17,6 +18,7 @@ function SearchByVersion() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [noResults, setNoResults] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchData();
@@ -66,6 +68,10 @@ function SearchByVersion() {
     fetchData();
   };
 
+  const handleNavigateToDetails = () =>{
+    navigate(`/OverViewPage`);
+  }
+
   if(loggedIn === true){
     return (
       <div>
@@ -75,7 +81,7 @@ function SearchByVersion() {
           <TextField
             value={version}
             onChange={(e) => setVersion(e.target.value)}
-            label="Error ID"
+            label="Version"
             variant="outlined"
             color = "secondary"
             focused = "true"
@@ -105,7 +111,7 @@ function SearchByVersion() {
                       <p>Commit: {result.testBatch?.commitShal || "{no value}"}</p>
                       <p>Build Time: {result.testBatch?.buildTime || "{no value}"}</p>
                       <p>Date: {result.testBatch?.dateTime ? new Date(result.testBatch.dateTime).toLocaleString() : "{no value}"}</p>
-                      <Button fullWidth variant="contained" color="secondary">
+                      <Button onClick={handleNavigateToDetails} fullWidth variant="contained" color="secondary">
                     View Details
                   </Button>
                     </CardContent>
@@ -139,7 +145,7 @@ function SearchByVersion() {
           <TextField
             value={version}
             onChange={(e) => setVersion(e.target.value)}
-            label="Error ID"
+            label="Version"
             variant="outlined"
             color = "secondary"
             focused = "true"
@@ -167,7 +173,7 @@ function SearchByVersion() {
                       <p>Commit: {result.testBatch?.commitShal || "{no value}"}</p>
                       <p>Build Time: {result.testBatch?.buildTime || "{no value}"}</p>
                       <p>Date: {result.testBatch?.dateTime ? new Date(result.testBatch.dateTime).toLocaleString() : "{no value}"}</p>
-                      <Button fullWidth variant="contained" color="secondary">
+                      <Button onClick={handleNavigateToDetails} fullWidth variant="contained" color="secondary">
                     View Details
                   </Button>
                     </CardContent>

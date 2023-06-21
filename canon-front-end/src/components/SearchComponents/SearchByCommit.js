@@ -3,9 +3,9 @@ import { TextField, Button, Card, CardContent } from "@mui/material";
 import SearchApi from "../../apis/SearchApi";
 import Pagination from "@mui/material/Pagination";
 import "./SearchByErrorId.css";
-import SearchByErrorIdPrivate from "./SearchByErrorIdPrivate";
 import TokenManager from "../../security/TokenManager";
 import SearchByCommitPrivate from "./SearchByCommitPrivate";
+import { useNavigate } from "react-router-dom";
 
 const RESULTS_PER_PAGE = 3;
 
@@ -16,6 +16,7 @@ function SearchByCommit() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [noResults, setNoResults] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchData();
@@ -65,6 +66,10 @@ function SearchByCommit() {
     fetchData();
   };
 
+  const handleNavigateToDetails = () =>{
+    navigate(`/OverViewPage`);
+  }
+
   if(loggedIn === true){
     return (
       <div>
@@ -74,7 +79,7 @@ function SearchByCommit() {
           <TextField
             value={commit}
             onChange={(e) => setCommit(e.target.value)}
-            label="Error ID"
+            label="Commit SHAL"
             variant="outlined"
             color = "secondary"
             focused = "true"
@@ -104,7 +109,7 @@ function SearchByCommit() {
                       <p>Commit: {result.testBatch?.commitShal || "{no value}"}</p>
                       <p>Build Time: {result.testBatch?.buildTime || "{no value}"}</p>
                       <p>Date: {result.testBatch?.dateTime ? new Date(result.testBatch.dateTime).toLocaleString() : "{no value}"}</p>
-                      <Button fullWidth variant="contained" color="secondary">
+                      <Button onClick={handleNavigateToDetails} fullWidth variant="contained" color="secondary">
                     View Details
                   </Button>
                     </CardContent>
@@ -138,7 +143,7 @@ function SearchByCommit() {
           <TextField
             value={commit}
             onChange={(e) => setCommit(e.target.value)}
-            label="Error ID"
+            label="Commit SHAL"
             variant="outlined"
             color = "secondary"
             focused = "true"
@@ -166,7 +171,7 @@ function SearchByCommit() {
                       <p>Commit: {result.testBatch?.commitShal || "{no value}"}</p>
                       <p>Build Time: {result.testBatch?.buildTime || "{no value}"}</p>
                       <p>Date: {result.testBatch?.dateTime ? new Date(result.testBatch.dateTime).toLocaleString() : "{no value}"}</p>
-                      <Button fullWidth variant="contained" color="secondary">
+                      <Button onClick={handleNavigateToDetails} fullWidth variant="contained" color="secondary">
                     View Details
                   </Button>
                     </CardContent>

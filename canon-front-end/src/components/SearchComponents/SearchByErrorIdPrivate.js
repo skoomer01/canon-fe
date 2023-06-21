@@ -5,6 +5,7 @@ import Pagination from "@mui/material/Pagination";
 import "./SearchByErrorId.css";
 import TokenManager from "../../security/TokenManager";
 import jwtDecode from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
 const RESULTS_PER_PAGE = 3;
 
@@ -17,6 +18,7 @@ function SearchByErrorIdPrivate(props) {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [noResults, setNoResults] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchData();
@@ -65,6 +67,10 @@ function SearchByErrorIdPrivate(props) {
     setCurrentPage(page);
   };
 
+  const handleNavigateToDetails = (id) =>{
+    navigate(`/TestStep/${id}`);
+  }
+
   return (
     <div className="search-results">
       {noResults ? (
@@ -87,7 +93,7 @@ function SearchByErrorIdPrivate(props) {
                   <p>Test: {result.regressionTest?.testName || "{no value}"}</p>
                   <p>Sub-test: {result.subTest?.subtestName || "{no value}"}</p>
                   <p>Test Step: {result.testStep?.testStepName || "{no value}"}</p>
-                  <Button fullWidth variant="contained" color="secondary">
+                  <Button onClick={() => handleNavigateToDetails(result.testStep.id)} fullWidth variant="contained" color="secondary">
                     View Details
                   </Button>
                 </CardContent>
