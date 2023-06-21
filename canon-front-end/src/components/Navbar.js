@@ -3,7 +3,7 @@ import "./Navbar.css";
 import { NavLink } from "react-router-dom";
 import { AuthContext } from './AuthContext';
 import jwt_decode from 'jwt-decode';
-
+import logo from '../img/canonlogo.png';
 
 function NavBar() {
     const { isLoggedIn, login, logout } = useContext(AuthContext);
@@ -33,8 +33,11 @@ function NavBar() {
     return (
       <nav className="navbar">
         <ul className="navbar-ul">
-          <div className="navbar-links">
-            {links.map(link => (
+        <div className="navbar-ul-li-a">
+              <img src={logo} alt="Canon Logo" className="navbar-logo" /> 
+              </div> 
+          <div className="navbar-links">          
+              {links.map(link => (
               <li key={link.id}>
                 <NavLink className="navbar-ul-li-a" to={link.path}>
                   {link.text}
@@ -42,6 +45,7 @@ function NavBar() {
               </li>
             ))}
           </div>
+
           <div className="navbar-auth">
             {isLoggedIn ? (
               <>

@@ -18,7 +18,7 @@ function HomePage() {
 
     return (
         <div>
-            <h1>Here are your latest 6 test sets</h1>
+            <h1>Here are your latest test sets</h1>
             <TestSet testSets={testSets} />
         </div>
     );

@@ -71,8 +71,8 @@
   position: relative;
   transition: background-color 0.3s ease;
   flex: 1; 
-  min-width: 300px; 
-  height: 65px;
+  min-width: 500px; 
+  height: 100px;
   
 }
 
@@ -90,8 +90,8 @@
   position: relative;
   transition: background-color 0.3s ease;
   flex: 1; 
-  min-width: 300px; 
-  height: 65px;
+  min-width: 500px; 
+  height: 100px;
 }
 
 
@@ -266,4 +266,19 @@ input:checked + .slider:before {
 }
 .freeze-label {
   margin-left: auto;
+}
+
+.loader {
+  border: 4px solid #f3f3f3; /* Light gray border */
+  border-top: 4px solid #3498db; /* Blue border for the loading animation */
+  border-radius: 50%; /* Rounded border */
+  width: 50px; /* Width and height of the loader */
+  height: 50px;
+  animation: spin 1s linear infinite; /* Animation properties */
+  margin: 40px auto; /* Center the loader horizontally */
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); } /* Starting point of the animation */
+  75% { transform: rotate(360deg); } /* Ending point of the animation */
 }
