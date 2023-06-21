@@ -26,7 +26,6 @@ function LoginForm() {
                 console.log(response.data);
                 sessionStorage.setItem("token", response.data.accessToken)
                 login();
-
                 navigate('/')
                 
                 window.location.reload();

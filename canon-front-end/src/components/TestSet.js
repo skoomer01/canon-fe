@@ -96,7 +96,7 @@ function TestSet(props) {
                           }
                         >
                           {test.failedCount > 0 && (
-                            <div className="failed-step-count">
+                            <div>
                               {test.failedCount}
                             </div>
                           )}

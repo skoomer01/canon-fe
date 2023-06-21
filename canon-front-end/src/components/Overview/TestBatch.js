@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import './TestBatch.css';
-import mockData from '../mockdata/mock-data2.json';
-import BranchAPI from "../apis/BranchApi";
-import TestBatchAPI from "../apis/testBatchApi"
-import TestSetAPI from "../apis/TestSetApi"
+import './TestBatchCSS.css';
+import mockData from '../../mockdata/mock-data2.json';
+import BranchAPI from "../../apis/BranchApi";
+import TestBatchAPI from "../../apis/testBatchApi"
+import TestSetAPI from "../../apis/TestSetApi"
 import { Card, CardBody, CardTitle, CardText, CardHeader } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
@@ -13,7 +13,7 @@ function TestBatchPage({ selectedBranchId }) {
   const [testData, setTestData] = useState([]);
   const [updatedTestSets, setUpdatedTestSets] = useState([]);
   const [updatedTestBatches, setUpdatedTestBatches] = useState([]);
-  const [isFrozen, setIsFrozen] = useState(false); // New state variable to control freezing
+  const [isFrozen, setIsFrozen] = useState(false); 
 
   useEffect(() => {
     let timer = null;
@@ -222,11 +222,12 @@ function TestBatchPage({ selectedBranchId }) {
                               >
                                 {test.failedCount > 0 && (
                                   <div className="failed-step-count">
-                                    {test.failedCount} {test.testName}
+                                    {test.failedCount}<br></br>
+                                     {test.testName}
                                   </div>
                                 )}
                                 {test.failedCount === 0 && (
-                                  <div className="checkmark">&#x2713; {test.testName}</div>
+                                  <div className="checkmarkov">&#x2713;<br></br> {test.testName}</div>
                                 )}
                               </div>
                             </Link>

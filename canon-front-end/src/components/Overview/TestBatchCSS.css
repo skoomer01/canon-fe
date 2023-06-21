@@ -7,21 +7,9 @@
   zoom: 80%;
   height: 100%;
   margin-top: 100px;
-  /* white-space: nowrap;    */
 }
 
-/* table {
-  width: 100%;
-  min-width: 100%;
-}
 
-th,
-td {
-  border-width: 1px !important;
-  border-style: solid !important;
-  padding: 10px;
-  text-align: center;
-} */
 
 .styled-table {
   border-collapse: collapse;
@@ -83,14 +71,12 @@ td {
   position: relative;
   transition: background-color 0.3s ease;
   flex: 1; 
-  min-width: 70px; 
+  min-width: 300px; 
   height: 65px;
   
 }
 
-/* .test-rectangle:hover {
-  background-color: #45a049;
-} */
+
 
 .test-rectangle-fail {
   background-color: #ff0000;
@@ -103,14 +89,12 @@ td {
   font-size: 24px;
   position: relative;
   transition: background-color 0.3s ease;
-  flex: 1; /* Add this line */
-  min-width: 70px; 
+  flex: 1; 
+  min-width: 300px; 
   height: 65px;
 }
 
-/* .test-rectangle-fail:hover {
-  background-color: #cfacac;
-} */
+
 
 .ov {
   text-align: center;
@@ -162,7 +146,7 @@ nav a {
   text-overflow: ellipsis;
 }
 
-.failed-step-count {
+.failed-step-count{
   position: absolute;
   top: 50%;
   left: 50%;
@@ -170,7 +154,7 @@ nav a {
   
 }
 
-.checkmark {
+.checkmarkov {
   position: absolute;
   top: 50%;
   left: 50%;

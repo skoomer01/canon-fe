@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import TestBatch from "../components/TestBatch";
+import TestBatch from "../components/Overview/TestBatch";
 import BranchCombobox from "../components/branchSelectionCb";
 
 function OverViewPage() {
