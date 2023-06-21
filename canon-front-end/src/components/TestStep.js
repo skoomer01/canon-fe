@@ -197,6 +197,15 @@ const TestStep = ({ id }) => {
                                 {testStep.errorid != null && (
                                     <TableCell>
                                         <Button
+                                            style = {{
+                                            backgroundColor: 'grey',
+                                            color: 'white',
+                                            padding: '8px 16px',
+                                            border: 'none',
+                                            cursor: 'pointer',
+                                            width: '100%',
+                                            height: '100%',
+                                        }}
                                             variant="contained"
                                             color="primary"
                                             onClick={() => handleButtonClick(testStep.errorid)}

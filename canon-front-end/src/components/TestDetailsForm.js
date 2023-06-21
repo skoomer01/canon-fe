@@ -225,7 +225,7 @@ function TestDetailsForm({ testDetails }) {
 
             <Box
                 sx={{
-                    height: '60vh',
+                    height: '65vh',
                     width: '60vh',
                     boxShadow: 1,
                     borderRadius: 2,
