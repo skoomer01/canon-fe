@@ -14,7 +14,12 @@ const StyledTabs = styled(Tabs)(({ theme }) => ({
   display: "flex",
   justifyContent: "flex-start",
   fontFamily: "Roboto",
+  "& .MuiTabs-indicator": {
+    backgroundColor: "#ce93d8", // Set the color for the tab underline here
+  },
+  
 }));
+
 
 const StyledTab = styled(Tab)(({ theme }) => ({
   minWidth: "unset",
@@ -24,7 +29,8 @@ const StyledTab = styled(Tab)(({ theme }) => ({
   fontWeight: 600,
   color: "#fff",
   "&.Mui-selected": {
-    color: "#00c3ff",
+    color: "#ce93d8 ",
+    
   },
 }));
 

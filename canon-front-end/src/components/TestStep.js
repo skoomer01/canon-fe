@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import TestStepApi from '../apis/testStepApi';
 import { useParams } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import subTestApi from "../apis/subTestApi";
 import testSetApi from "../apis/TestSetApi";
@@ -18,6 +19,8 @@ const TestStep = ({ id }) => {
   const [testBatch, setTestBatch] = useState(null);
   const [branch, setBranch] = useState(null);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
+
 
 
 
@@ -72,7 +75,7 @@ const TestStep = ({ id }) => {
         .catch(error => {
           console.log(error);
           setError(error);
-        });
+        });   
   }, []);
 
 
@@ -91,6 +94,10 @@ const TestStep = ({ id }) => {
 
     fetchTestStepById();
   }, [testStepId, testStep]);
+
+  const handleButtonClick = (errorid) => {
+    navigate(`/SimilarErrorsPage/${errorid}`);
+  };
 
   return (
     <div>
@@ -129,7 +136,7 @@ const TestStep = ({ id }) => {
 
 
       {testStep ? (
-
+        <div>
         <table>
           <thead>
            <tr>
@@ -149,9 +156,17 @@ const TestStep = ({ id }) => {
             <td>{testStep.testResult ? "Passed" : "Failed"}</td>
             <td>{testStep.description}</td>
             <td>{testStep.errorid}</td>
+            {subTest != null ? (
+              <div>
+                <br></br>
+                <button type="button" onClick={() => handleButtonClick(testStep.errorid)}>Show all by error</button>
+              </div>
+              ):<div></div>}
           </tr>
           </tbody>
           </table>
+            
+          </div>
       ) : (
         <p>Loading ...</p>
       )}
