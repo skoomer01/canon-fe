@@ -1,0 +1,7 @@
+.breadcrumb-link {
+  color: black;
+}
+
+.breadcrumb-link:hover {
+  color: blue;
+}

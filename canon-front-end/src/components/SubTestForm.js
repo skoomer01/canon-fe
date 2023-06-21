@@ -2,6 +2,7 @@ import React, {useEffect, useMemo, useState} from "react";
 import subTestApi from "../apis/subTestApi";
 import testStepApi from "../apis/testStepApi";
 import {Link, useNavigate} from "react-router-dom";
+import './breadcrumb.css';
 import './SubTest.css';
 import testSetApi from "../apis/TestSetApi";
 import testBatchApi from "../apis/testBatchApi";
@@ -131,8 +132,7 @@ function SubTestForm({ subTestDetails }) {
                     <Link
                         underline="hover"
                         to={`/OverViewPage`}
-                        style={{ color: 'black', textDecoration: 'none' }}
-                        hover={{ color: 'grey' }}
+                        className="breadcrumb-link"
                     >
                         Overview
                     </Link>
@@ -143,10 +143,9 @@ function SubTestForm({ subTestDetails }) {
                         underline="hover"
 
                         to={`/testdetailspage/${test.id}`}
-                        style={{ color: 'black', textDecoration: 'none' }}
-                        hover={{ color: 'grey' }}
+                        className="breadcrumb-link"
                     >
-                        <Typography color="text.primary">{test.testName}</Typography>
+                        <Typography >{test.testName}</Typography>
                     </Link>
                     )}
 
@@ -175,7 +174,7 @@ function SubTestForm({ subTestDetails }) {
                     justifyContent: 'center',
                     alignItems: 'center',
                     position: 'fixed',
-                    top: '50%',
+                    top: '55%',
                     left: '50%',
                     transform: 'translate(-50%, -50%)',
                     maxWidth: '90vw',  // Add this line to set the maximum width of the box

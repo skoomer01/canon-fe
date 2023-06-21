@@ -6,6 +6,13 @@
     align-items: center;
 }
 
+.breadcrumb-link {
+    color: black;
+}
+
+.breadcrumb-link:hover {
+    color: blue;
+}
 
 .failed {
     background-color: #FF0000;

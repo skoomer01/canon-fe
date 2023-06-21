@@ -11,6 +11,8 @@ import { DataGrid } from "@mui/x-data-grid";
 import {createTheme, gridClasses} from "@mui/system";
 import {grey} from "@mui/material/colors";
 import { palette } from '@mui/system';
+import './TestDetails.css';
+import './breadcrumb.css';
 
 function TestDetailsForm({ testDetails }) {
     const [subTests, setSubTests] = useState([]);
@@ -204,16 +206,16 @@ function TestDetailsForm({ testDetails }) {
                     <Link
                         underline="hover"
                         to={`/OverViewPage`}
-                        style={{ color: 'black', textDecoration: 'none' }}
-                        hover={{ color: 'grey' }}
+                        className="breadcrumb-link"
                     >
                         Overview
                     </Link>
-
                     {test == null ? (
                         <div>Nothing</div>
                     ) : (
-                        <Typography color="text.primary">{test.testName}</Typography>
+                        <Typography color="text.primary">
+                            {test.testName}
+                        </Typography>
                     )}
                 </Breadcrumbs>
             </div>

@@ -8,6 +8,7 @@ import testSetApi from '../apis/TestSetApi';
 import testBatchApi from '../apis/testBatchApi';
 import branchApi from '../apis/BranchApi';
 import testStepApi from '../apis/testStepApi';
+import './breadcrumb.css';
 import testApi from '../apis/testApi';
 import {Box, Breadcrumbs, Button, TableBody, TableCell, TableHead, TableRow, Typography} from '@mui/material';
 import { Table } from 'reactstrap';
@@ -107,45 +108,39 @@ const TestStep = ({ id }) => {
                     <Link
                         underline="hover"
                         to={`/OverViewPage`}
-                        style={{ color: 'black', textDecoration: 'none' }}
-                        hover={{ color: 'grey' }}
+                        className="breadcrumb-link"
                     >
                         Overview
                     </Link>
                     {test == null ? (
                         <div>Nothing</div>
                     ) : (
-                    <Link
-                        underline="hover"
-                        to={`/testdetailspage/${test.id}`}
-                        style={{ color: 'black', textDecoration: 'none' }}
-                        hover={{ color: 'grey' }}
-                    >
-
-                            <Typography color="text.primary">{test.testName}</Typography>
-                    </Link>
+                        <Link
+                            underline="hover"
+                            to={`/testdetailspage/${test.id}`}
+                            className="breadcrumb-link"
+                        >
+                            <Typography >{test.testName}</Typography>
+                        </Link>
                     )}
                     {subTest == null ? (
                         <div>Nothing</div>
                     ) : (
-                    <Link
-                        underline="hover"
-                        to={`/SubTestPage/${subTest.id}`}
-                        style={{ color: 'black', textDecoration: 'none' }}
-                        hover={{ color: 'grey' }}
-                    >
-                            <Typography color="text.primary">{subTest.subtestName}</Typography>
-                    </Link>
-
+                        <Link
+                            underline="hover"
+                            to={`/SubTestPage/${subTest.id}`}
+                            className="breadcrumb-link"
+                        >
+                            <Typography >{subTest.subtestName}</Typography>
+                        </Link>
                     )}
-
                     {testStep == null ? (
                         <div>Nothing</div>
                     ) : (
-                        <Typography color="text.primary">{testStep.testStepName}</Typography>
+                        <Typography  color="text.primary">
+                            {testStep.testStepName}
+                        </Typography>
                     )}
-
-
                 </Breadcrumbs>
             </div>
 
@@ -161,7 +156,7 @@ const TestStep = ({ id }) => {
                     justifyContent: 'center',
                     alignItems: 'center',
                     position: 'fixed',
-                    top: '35%',
+                    top: '45%',
                     left: '50%',
                     transform: 'translate(-50%, -50%)',
                     maxWidth: '90vw',  // Add this line to set the maximum width of the box
