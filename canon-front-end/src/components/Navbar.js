@@ -1,45 +1,64 @@
-import React from "react"
-import "./Navbar.css"
-import { NavLink } from "react-router-dom"
+import React, { useContext } from "react";
+import "./Navbar.css";
+import { NavLink } from "react-router-dom";
+import { AuthContext } from './AuthContext';
+import jwt_decode from 'jwt-decode';
+
 
 function NavBar() {
-
+    const { isLoggedIn, login, logout } = useContext(AuthContext);
+  
+    const token = sessionStorage.getItem('token');
+    const decodedToken = token ? jwt_decode(token) : null;
+    const username = decodedToken?.sub;
+  
     const links = [
-        {
-            id: 1,
-            path: "/",
-            text: "Home"
-        },
-        {
-            id: 2,
-            path: "/OverViewPage",
-            text: "Overview"
-        },
-        {
-            id: 3,
-            path: "/logInPage",
-            text: "Log in"
-        },
-        {
-            id: 4,
-            path: "/search",
-            text: "Search"
-        }
-    ]
-
+      {
+        id: 1,
+        path: "/",
+        text: "Home"
+      },
+      {
+        id: 2,
+        path: "/OverViewPage",
+        text: "Overview"
+      },
+      {
+        id: 4,
+        path: "/search",
+        text: "Search"
+      }
+    ];
+  
     return (
-        <nav className="navbar">
-            <ul className="navbar-ul">
-                {links.map(link => {
-                    return (
-                        <li key={link.id}>
-                            { <NavLink className="navbar-ul-li-a" to={link.path}> {link.text} </NavLink> }
-                        </li>
-                    )
-                })}
-            </ul>
-        </nav>
-    )
-}
+      <nav className="navbar">
+        <ul className="navbar-ul">
+          <div className="navbar-links">
+            {links.map(link => (
+              <li key={link.id}>
+                <NavLink className="navbar-ul-li-a" to={link.path}>
+                  {link.text}
+                </NavLink>
+              </li>
+            ))}
+          </div>
+          <div className="navbar-auth">
+            {isLoggedIn ? (
+              <>
+                <div className="navbar-ul-li-a">{`Welcome ${username}`}</div>
+                <button className="navbar-ul-li-button" onClick={logout}>
+                  Logout
+                </button>
+              </>
+            ) : (
+              <NavLink className="navbar-ul-li-a" to="/logInPage">
+                Log in
+              </NavLink>
+            )}
+          </div>
+        </ul>
+      </nav>
+    );
+  }
 
-export default NavBar;
+  export default NavBar;
