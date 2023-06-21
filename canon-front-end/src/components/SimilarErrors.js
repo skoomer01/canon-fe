@@ -30,7 +30,6 @@ return (
              <th>ID</th>
              <th>Test Step Name</th>
              <th>Sub Test ID</th>
-             <th>Test Result</th>
              <th>Description</th>
            </tr>
           </thead>
@@ -39,9 +38,9 @@ return (
                 <tr>
             <td>{testStep.id}</td>
             <td>{testStep.testStepName}</td>
-            <td><Link key={testStep.id} to={`/SubTestPage/${testStep.id}`}>{testStep.subTestId}</Link></td>
-            <td>{testStep.testResult ? "Passed" : "Failed"}</td>
+            <td>{testStep.subTestId}</td>
             <td>{testStep.description}</td>
+            <Link key={testStep.id} to={`/SubTestPage/${testStep.id}`}>Go to the subtest with id: {testStep.subTestId}</Link>
             </tr>
             ))}
             </tbody>

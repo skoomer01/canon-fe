@@ -153,15 +153,16 @@ const TestStep = ({ id }) => {
             <td>{testStep.testResult ? "Passed" : "Failed"}</td>
             <td>{testStep.description}</td>
             <td>{testStep.errorid}</td>
-          </tr>
-          </tbody>
-          </table>
             {subTest != null ? (
               <div>
                 <br></br>
                 <button type="button" onClick={() => handleButtonClick(testStep.errorid)}>Show all by error</button>
               </div>
               ):<div></div>}
+          </tr>
+          </tbody>
+          </table>
+            
           </div>
       ) : (
         <p>Loading ...</p>
