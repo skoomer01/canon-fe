@@ -1,7 +1,7 @@
 .navbar {
     width: 100vw;
     font-weight: bold;
-    background-color: #3f3f3f;
+    background-color: #000000;
   }
   
   .navbar-ul {
@@ -10,13 +10,13 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1.5em 0;
+    padding: 0em 0;
     width: 100%;
   }
   
   .navbar-links {
     display: flex;
-    align-items: center;
+    align-items: left;
     justify-content: space-between;
     margin-left: 70px;
   }
@@ -91,4 +91,9 @@
 
 .navbar-ul-li-button:hover::after {
   width: 100%;
+}
+.navbar-logo {
+  width: 200px;
+  height: 100px;
+ 
 }

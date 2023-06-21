@@ -16,7 +16,7 @@ img {
 }
 
 .login-heading {
-    margin-left: -80%;
+    margin-left: -85%;
 }
 
 .login-form {
@@ -27,9 +27,7 @@ img {
     max-width: 600px;
 }
 
-.login-heading {
-    margin-bottom: 20px;
-}
+
 
 .form-group {
     margin-bottom: 20px;

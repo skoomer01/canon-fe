@@ -125,7 +125,6 @@ function TestBatchPage({ selectedBranchId }) {
       }
     });
 
-    // Sort the test batches in descending order based on the dateTime property
     updatedTestBatches.sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime));
   
     setUpdatedTestBatches(updatedTestBatches);
@@ -148,7 +147,7 @@ function TestBatchPage({ selectedBranchId }) {
   };
 
   if (testBatches.length === 0) {
-    return <div>Loading...</div>;
+    return <div class="loader"></div>
   }
 
   const handleTestSetClick = (testSetId) => {
