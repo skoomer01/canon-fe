@@ -14,59 +14,63 @@ function TestBatchPage({selectedBranchId}){
   const [updatedTestSets, setUpdatedTestSets] = useState([]);
   const [updatedTestBatches, setUpdatedTestBatches] = useState([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (selectedBranchId !== 0) {
-          const response = await BranchAPI.getAllTestBatchesFromABranch(selectedBranchId);
-          setTestBatches(response.data.testBatchList);
-        } else {
-          setTestBatches([]); // Reset test batches when no branch is selected
-        }
-      } catch (error) {
-        console.log("Failed to fetch test batches:", error);
+  const fetchData = async () => {
+    try {
+      if (selectedBranchId !== 0) {
+        const response = await BranchAPI.getAllTestBatchesFromABranch(selectedBranchId);
+        setTestBatches(response.data.testBatchList);
+      } else {
+        setTestBatches([]); // Reset test batches when no branch is selected
       }
-    };
-    fetchData();
-  }, [selectedBranchId]);
+    } catch (error) {
+      console.log("Failed to fetch test batches:", error);
+    }
+  };
 
-  useEffect(() => {
-    const fetchTestSets = async () => {
-      const testSetsPromises = testBatches.map((testBatch) =>
-        TestBatchAPI.getAllTestSetsFromABatch(testBatch.id)
-      );
-    
-      try {
-        const testSetsResponses = await Promise.all(testSetsPromises);
-        const testSetsData = testSetsResponses.map((response) => response.data.testSetList);
-        setTestSets(testSetsData.flat());
-      } catch (error) {
-        console.error('Error fetching test sets:', error);
-      }
-    };
-  
-    fetchTestSets();
-  }, [testBatches]);
+  // useEffect(() => {
+  //   fetchData();
+  // }, [selectedBranchId]);
 
-  useEffect(() => {
-    const fetchTests = async () => {
-      const testSetIds = testSets.map((testSet) => testSet.id);
-      const testsPromises = testSetIds.map(async (testSetId) => {
-        const response = await TestSetAPI.getAllTestsByTestSetId(testSetId);
-        return response.data.regressionTests;
-      });
+  const fetchTestSets = async () => {
+    const testSetsPromises = testBatches.map((testBatch) =>
+      TestBatchAPI.getAllTestSetsFromABatch(testBatch.id)
+    );
   
-      try {
-        const testsResponses = await Promise.all(testsPromises);
-        const testsData = testsResponses.flat();
-        setTestData(testsData);
-      } catch (error) {
-        console.error('Error fetching tests:', error);
-      }
-    };
+    try {
+      const testSetsResponses = await Promise.all(testSetsPromises);
+      const testSetsData = testSetsResponses.map((response) => response.data.testSetList);
+      setTestSets(testSetsData.flat());
+    } catch (error) {
+      console.error('Error fetching test sets:', error);
+    }
+  };
+
+  // useEffect(() => {
   
-    fetchTests();
-  }, [testSets]);
+  //   fetchTestSets();
+  // }, [testBatches]);
+
+  const fetchTests = async () => {
+    const testSetIds = testSets.map((testSet) => testSet.id);
+    const testsPromises = testSetIds.map(async (testSetId) => {
+      const response = await TestSetAPI.getAllTestsByTestSetId(testSetId);
+      return response.data.regressionTests;
+    });
+
+    try {
+      const testsResponses = await Promise.all(testsPromises);
+      const testsData = testsResponses.flat();
+      setTestData(testsData);
+    } catch (error) {
+      console.error('Error fetching tests:', error);
+    }
+  };
+
+  // useEffect(() => {
+
+  
+  //   fetchTests();
+  // }, [testSets]);
 
   // const updateTestSetsWithTests = () => {
   //   const updatedTestSets = testSets.map((testSet) => ({
@@ -114,17 +118,17 @@ function TestBatchPage({selectedBranchId}){
     setUpdatedTestSets(updatedTestSets);
   };
   
-  useEffect(() => {
-    if (testData.length > 0) {
-      updateTestSetsWithTestsAndFailedCount();
-    }
-  }, [testData]);
+  // useEffect(() => {
+  //   if (testData.length > 0) {
+  //     updateTestSetsWithTestsAndFailedCount();
+  //   }
+  // }, [testData]);
 
   useEffect(() => {
     console.log("kkk" + JSON.stringify(updatedTestSets));
   },[updatedTestSets])
 
-  const updateTestBatchesWithTestSets = () => {
+  const updateTestBatchesWithTestSets = async () => {
     const updatedTestBatches = testBatches.map((testBatch) => ({
       ...testBatch,
       testSets:[],
@@ -145,15 +149,15 @@ function TestBatchPage({selectedBranchId}){
   
 
 
-  useEffect(() => {
-    if (updatedTestSets.length > 0) {
-      updateTestBatchesWithTestSets();
-    }
-  }, [updatedTestSets, testBatches]);
+  // useEffect(() => {
+  //   if (updatedTestSets.length > 0) {
+  //     updateTestBatchesWithTestSets();
+  //   }
+  // }, [updatedTestSets, testBatches]);
 
-  useEffect(() => {
-    console.log(JSON.stringify(updatedTestBatches));
-  }, [updatedTestBatches]);
+  // useEffect(() => {
+  //   console.log(JSON.stringify(updatedTestBatches));
+  // }, [updatedTestBatches]);
 
   const fetchFailedTestStepCount = async (testId) => {
     try {
@@ -163,6 +167,21 @@ function TestBatchPage({selectedBranchId}){
       console.error('Error fetching failed test step count:', error);
       return 1;
     }
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetchData1();
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const fetchData1 = async () => {
+    await fetchTestSets();
+    await fetchTests();
+    await updateTestSetsWithTestsAndFailedCount();
+    await updateTestBatchesWithTestSets();
   };
 
 

@@ -3,10 +3,13 @@ import { TextField, Button, Card, CardContent } from "@mui/material";
 import SearchApi from "../../apis/SearchApi";
 import Pagination from "@mui/material/Pagination";
 import "./SearchByErrorId.css"; // Import the CSS file
+import SearchByErrorIdPrivate from "./SearchByErrorIdPrivate";
+import TokenManager from "../../security/TokenManager";
 
 const RESULTS_PER_PAGE = 3;
 
 function SearchByErrorId() {
+  const [loggedIn, setLoggedIn] = useState(!!TokenManager.getAccessToken());
   const [errorId, setErrorId] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -15,7 +18,7 @@ function SearchByErrorId() {
 
   useEffect(() => {
     fetchData();
-  }, [currentPage]);
+  }, [currentPage, errorId]);
 
   const fetchData = async () => {
     if (errorId.trim() === "") {
@@ -37,7 +40,6 @@ function SearchByErrorId() {
       setNoResults(response.length === 0);
     } catch (error) {
       console.error("Error occurred while searching by error ID:", error);
-      // Handle error state or show error message
     }
   };
 
@@ -50,7 +52,6 @@ function SearchByErrorId() {
       setTotalPages(response);
     } catch (error) {
       console.error("Error occurred while counting pages:", error);
-      // Handle error state or show error message
     }
   };
 
@@ -59,174 +60,144 @@ function SearchByErrorId() {
   };
 
   const handleSearchClick = () => {
-    setCurrentPage(1); // Reset current page to 1 when search is clicked
+    setCurrentPage(1); 
     fetchData();
   };
 
-  return (
-    <div className="search-container"> {/* Apply container styles */}
-      <div className="search-header"> {/* Apply header styles */}
-        <TextField
-          value={errorId}
-          onChange={(e) => setErrorId(e.target.value)}
-          label="Error ID"
-          variant="outlined"
-        />
-        <Button onClick={handleSearchClick} variant="contained" color="primary">
-          Search
-        </Button>
-      </div>
-
-      <div className="search-results"> {/* Apply results container styles */}
-        {noResults ? (
-          <p>No search results found.</p>
-        ) : (
-          <>
-            <p>Search Results:</p>
-            <div className="results-grid"> {/* Apply grid styles */}
-              {searchResults.map((result) => (
-                <Card key={result.id} variant="outlined">
-                  <CardContent>
-                    <p>Branch: {result.branch?.branchName || "{no value}"}</p>
-                    <p>Version: {result.testBatch?.version || "{no value}"}</p>
-                    {/* <p>Commit: {result.testBatch?.commitShal || "{no value}"}</p> */}
-                    <p>Build Time: {result.testBatch?.buildTime || "{no value}"}</p>
-                    <p>Date: {result.testBatch?.dateTime ? new Date(result.testBatch.dateTime).toLocaleString() : "{no value}"}</p>
-                    {/* <p>Date: {result.testBatch?.dateTime || "{no value}"}</p> */}
-                    <p>Test Set: {result.testSet?.name || "{no value}"}</p>
-                    <p>Test: {result.regressionTest?.testName || "{no value}"}</p>
-                    <p>Sub-test: {result.subtest?.subtestName || "{no value}"}</p>
-                    <p>Test Step: {result.testStep?.testStepName || "{no value}"}</p>
-                  </CardContent>
-                </Card>
-              ))}
+  if(loggedIn === true){
+    return (
+      <div>
+        <div className="search-container">
+        <div className="search-header"> 
+          <TextField
+            value={errorId}
+            onChange={(e) => setErrorId(e.target.value)}
+            label="Error ID"
+            variant="outlined"
+            color = "secondary"
+            focused = "true"
+            style={{ marginRight: '10px', height: '40px' }}
+          />
+          <Button onClick={handleSearchClick} variant="contained" color="secondary" style={{ height: '55px' }}>
+            Search
+          </Button>
+        </div>
+        <div className="search-results">
+          {noResults ? (
+            <div className="no-result"> 
+                <div><SearchByErrorIdPrivate errorId = {errorId}  /></div>
+              <p>No search results found from main branch.</p>
             </div>
-          </>
-        )}
-
-        {!noResults && (
-          <div className="pagination-container"> {/* Apply pagination container styles */}
-            <Pagination
-              count={totalPages}
-              page={currentPage}
-              onChange={handlePageChange}
-              color="secondary"
-            />
-          </div>
-        )}
+          ) : (
+            <>
+              <div><SearchByErrorIdPrivate errorId = {errorId}  /></div>
+              <div className="public-branch-header">
+                <h5>Results From Main Branch:</h5>
+              </div>
+              <div className="results-grid"> 
+                {searchResults.map((result) => (
+                  <Card key={result.id} variant="outlined">
+                    <CardContent className="card-content-from-bootstrap">
+                      <p>Version: {result.testBatch?.version || "{no value}"}</p>
+                      <p>Commit: {result.testBatch?.commitShal || "{no value}"}</p>
+                      <p>Build Time: {result.testBatch?.buildTime || "{no value}"}</p>
+                      <p>Date: {result.testBatch?.dateTime ? new Date(result.testBatch.dateTime).toLocaleString() : "{no value}"}</p>
+                      <p>Test Set: {result.testSet?.name || "{no value}"}</p>
+                      <p>Test: {result.regressionTest?.testName || "{no value}"}</p>
+                      <p>Sub-test: {result.subTest?.subtestName || "{no value}"}</p>
+                      <p>Test Step: {result.testStep?.testStepName || "{no value}"}</p>
+                      <Button fullWidth variant="contained" color="secondary">
+                    View Details
+                  </Button>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </>
+          )}
+  
+          {!noResults && (
+            <div className="pagination-container"> 
+              <Pagination
+                count={totalPages}
+                page={currentPage}
+                onChange={handlePageChange}
+                color="secondary"
+              />
+            </div>
+          )}
+        </div>
       </div>
-    </div>
-  );
+      </div>
+    );
+  }
+  else{
+    return (
+      <div>
+        <div className="search-container"> {/* Apply container styles */}
+  
+        <div className="search-header"> {/* Apply header styles */}
+          <TextField
+            value={errorId}
+            onChange={(e) => setErrorId(e.target.value)}
+            label="Error ID"
+            variant="outlined"
+            color = "secondary"
+            focused = "true"
+            style={{ marginRight: '10px', height: '40px' }}
+          />
+          <Button onClick={handleSearchClick} variant="contained" color="secondary" style={{ height: '55px' }}>
+            Search
+          </Button>
+        </div>
+        <div className="search-results"> {/* Apply results container styles */}
+          {noResults ? (
+            <div className="no-result"> 
+              <p>No search results found from main branch.</p>
+            </div>
+          ) : (
+            <>
+              <div className="public-branch-header">
+                <h5>Results From Main Branch:</h5>
+              </div>
+              <div className="results-grid"> {/* Apply grid styles */}
+                {searchResults.map((result) => (
+                  <Card key={result.id} variant="outlined">
+                    <CardContent className="card-content-from-bootstrap">
+                      {/* <p>Branch: {result.branch?.branchName || "{no value}"}</p> */}
+                      <p>Version: {result.testBatch?.version || "{no value}"}</p>
+                      <p>Commit: {result.testBatch?.commitShal || "{no value}"}</p>
+                      <p>Build Time: {result.testBatch?.buildTime || "{no value}"}</p>
+                      <p>Date: {result.testBatch?.dateTime ? new Date(result.testBatch.dateTime).toLocaleString() : "{no value}"}</p>
+                      {/* <p>Date: {result.testBatch?.dateTime || "{no value}"}</p> */}
+                      <p>Test Set: {result.testSet?.name || "{no value}"}</p>
+                      <p>Test: {result.regressionTest?.testName || "{no value}"}</p>
+                      <p>Sub-test: {result.subTest?.subtestName || "{no value}"}</p>
+                      <p>Test Step: {result.testStep?.testStepName || "{no value}"}</p>
+                      <Button fullWidth variant="contained" color="secondary">
+                    View Details
+                  </Button>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </>
+          )}
+  
+          {!noResults && (
+            <div className="pagination-container"> {/* Apply pagination container styles */}
+              <Pagination
+                count={totalPages}
+                page={currentPage}
+                onChange={handlePageChange}
+                color="secondary"
+              />
+            </div>
+          )}
+        </div>
+      </div>
+      </div>
+    );
+  }
 }
-
 export default SearchByErrorId;
-
-
-// import React, { useState, useEffect } from "react";
-// import { TextField, Button, Card, CardContent } from "@mui/material";
-// import SearchApi from "../../apis/SearchApi";
-// import Pagination from "@mui/material/Pagination";
-
-// const RESULTS_PER_PAGE = 6;
-
-// function SearchByErrorId() {
-//   const [errorId, setErrorId] = useState("");
-//   const [searchResults, setSearchResults] = useState([]);
-//   const [currentPage, setCurrentPage] = useState(1);
-//   const [totalPages, setTotalPages] = useState(0);
-//   const [noResults, setNoResults] = useState(false);
-
-//   useEffect(() => {
-//     fetchData();
-//   }, [currentPage]);
-
-//   const fetchData = async () => {
-//     if (errorId.trim() === "") {
-//       setNoResults(true);
-//       return;
-//     }
-//     await handleCountPages();
-//     await handleSearch();
-//   };
-
-//   const handleSearch = async () => {
-//     try {
-//       const response = await SearchApi.getByErrorIdFromPublic(
-//         errorId,
-//         RESULTS_PER_PAGE,
-//         currentPage
-//       );
-//       setSearchResults(response);
-//       setNoResults(response.length === 0);
-//     } catch (error) {
-//       console.error("Error occurred while searching by error ID:", error);
-//       // Handle error state or show error message
-//     }
-//   };
-
-//   const handleCountPages = async () => {
-//     try {
-//       const response = await SearchApi.countPagesForErrorIdFromPublic(
-//         errorId,
-//         RESULTS_PER_PAGE
-//       );
-//       setTotalPages(response);
-//     } catch (error) {
-//       console.error("Error occurred while counting pages:", error);
-//       // Handle error state or show error message
-//     }
-//   };
-
-//   const handlePageChange = (event, page) => {
-//     setCurrentPage(page);
-//   };
-
-//   const handleSearchClick = () => {
-//     setCurrentPage(1); // Reset current page to 1 when search is clicked
-//     fetchData();
-//   };
-
-//   return (
-//     <div>
-//       <TextField
-//         value={errorId}
-//         onChange={(e) => setErrorId(e.target.value)}
-//         label="Error ID"
-//         variant="outlined"
-//       />
-//       <Button onClick={handleSearchClick} variant="contained" color="primary">
-//         Search
-//       </Button>
-
-//       <div>
-//         {noResults ? (
-//           <p>No search results found.</p>
-//         ) : (
-//           <>
-//             <p>Search Results:</p>
-//             {searchResults.map((result) => (
-//               <Card key={result.id} variant="outlined">
-//                 <CardContent>
-//                   <p>Test Step: {result.testStep.testStepName}</p>
-//                 </CardContent>
-//               </Card>
-//             ))}
-//           </>
-//         )}
-
-//         {!noResults && (
-//           <div>
-//             <Pagination
-//               count={totalPages}
-//               page={currentPage}
-//               onChange={handlePageChange}
-//               color="secondary"
-//             />
-//           </div>
-//         )}
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default SearchByErrorId;
