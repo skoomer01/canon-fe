@@ -16,3 +16,10 @@
     align-items: center;
     font-size: 24px;
 }
+.breadcrumb-link {
+    color: black;
+}
+
+.breadcrumb-link:hover {
+    color: blue;
+}

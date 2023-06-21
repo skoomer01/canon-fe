@@ -4,6 +4,8 @@ import ErrorsAPI from "../apis/ErrorsAPI";
 import {Box, Breadcrumbs, Typography} from "@mui/material";
 import {DataGrid} from "@mui/x-data-grid";
 import {grey} from "@mui/material/colors";
+import './breadcrumb.css';
+
 
 const SimilarErrors = ({ id }) => {
     const { id : errorid } = useParams();
@@ -79,18 +81,8 @@ return (
         <Breadcrumbs aria-label="breadcrumb">
             <Link
                 underline="hover"
-                to={`/OverViewPage`}
-                style={{ color: 'black', textDecoration: 'none' }}
-                hover={{ color: 'grey' }}
-            >
-                Overview
-            </Link>
-
-            <Link
-                underline="hover"
                 onClick={() => navigate(-1)}
-                style={{ color: 'black', textDecoration: 'none' }}
-                hover={{ color: 'grey' }}
+                className="breadcrumb-link"
             >
                 Back
             </Link>
