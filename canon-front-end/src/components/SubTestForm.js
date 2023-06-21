@@ -23,8 +23,8 @@ function SubTestForm({ subTestDetails }) {
     const [branch, setBranch] = useState(null);
 
     const columns = useMemo(() => [
-        { field: 'id', headerName: 'ID', width: 200 },
-        { field: 'testStepName', headerName: 'Name', width: 200 },
+        { field: 'id', headerName: 'ID', width: 100 },
+        { field: 'testStepName', headerName: 'Name', width: 300 },
         {
             field: 'errorid',
             headerName: 'Test Stance',

@@ -36,8 +36,8 @@ function TestDetailsForm({ testDetails }) {
 
 
     const columns = useMemo(() => [
-        { field: 'id', headerName: 'ID', width: 200 },
-        { field: 'subtestName', headerName: 'Name', width: 200 },
+        { field: 'id', headerName: 'ID', width: 100 },
+        { field: 'subtestName', headerName: 'Name', width: 400 },
         {
             field: 'failedCounter',
             headerName: 'Failed',
