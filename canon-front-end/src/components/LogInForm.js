@@ -1,13 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "./LogInForm.css";
 import LoginAPI from "../apis/loginApi";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "./AuthContext";
+
 
 
 function LoginForm() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
+    const { login } = useContext(AuthContext);
+
 
 
     const handleLogin = (event) => {
@@ -21,6 +25,8 @@ function LoginForm() {
                 console.log(response.status);
                 console.log(response.data);
                 sessionStorage.setItem("token", response.data.accessToken)
+                login();
+
                 navigate('/')
                 
                 window.location.reload();
