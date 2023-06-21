@@ -70,7 +70,7 @@ function TestSet(props) {
         <thead className='tableHeader'>
           <tr>
             {updatedTestSets.map((ts) => (
-              <th key={ts.id}>Test set name: {ts.name}</th>
+              <th key={ts.id}>{ts.name}</th>
             ))}
           </tr>
         </thead>
