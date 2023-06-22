@@ -14,16 +14,19 @@ function TestBatchPage({ selectedBranchId }) {
   const [updatedTestSets, setUpdatedTestSets] = useState([]);
   const [updatedTestBatches, setUpdatedTestBatches] = useState([]);
   const [isFrozen, setIsFrozen] = useState(false); 
-
+  const [isLoading, setIsLoading] = useState(true);
+  
   useEffect(() => {
     let timer = null;
-  
+    console.log(selectedBranchId);
     const fetchData = async () => {
       try {
         if (selectedBranchId !== 0 && !isFrozen) { // Fetch data only if not frozen
           const response = await BranchAPI.getAllTestBatchesFromABranch(selectedBranchId);
           console.log("load test batch");
           setTestBatches(response.data.testBatchList);
+          console.log(selectedBranchId);
+
         } else {
           setTestBatches([]); // Reset test batches when no branch is selected or frozen
         }
@@ -31,7 +34,6 @@ function TestBatchPage({ selectedBranchId }) {
         console.log("Failed to fetch test batches:", error);
       }
     };
-  
     if (!isFrozen) {
       timer = setInterval(fetchData, 5000); // Fetch data every 5 seconds
     }
@@ -44,6 +46,9 @@ function TestBatchPage({ selectedBranchId }) {
     setIsFrozen((prevIsFrozen) => !prevIsFrozen); 
     console.log(isFrozen);
   };
+  useEffect(() => {
+
+  },[])
   useEffect(() => {
     const fetchTestSets = async () => {
       const testSetsPromises = testBatches.map((testBatch) =>
@@ -124,7 +129,7 @@ function TestBatchPage({ selectedBranchId }) {
         updatedTestBatches[testBatchIndex].testSets.push(testSet);
       }
     });
-
+    setIsLoading(false);
     updatedTestBatches.sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime));
   
     setUpdatedTestBatches(updatedTestBatches);
@@ -146,7 +151,7 @@ function TestBatchPage({ selectedBranchId }) {
     }
   };
 
-  if (testBatches.length === 0) {
+  if (isLoading) {
     return <div class="loader"></div>
   }
 
@@ -199,8 +204,8 @@ function TestBatchPage({ selectedBranchId }) {
               <td>{testBatch.commitShal}</td>
               <td>{testBatch.dateTime}</td>
               {testBatch.testSets.map((testSet) => (
-                <td key={testSet.id} className={testSet.regressionTests.some((test) => test.failedCount > 0) ? "red-cell" : "green-cell"}>
-                  <div className="test-container" onClick={() => handleTestSetClick(testSet.id)}>
+                <td key={testSet.id} onClick={() => handleTestSetClick(testSet.id)}className={testSet.regressionTests.some((test) => test.failedCount > 0) ? "red-cell" : "green-cell"}>
+                  <div className="test-container" >
                     {testSet.expanded ? (
                       <>
                         {testSet.regressionTests.length > 0 ? (
@@ -242,18 +247,18 @@ function TestBatchPage({ selectedBranchId }) {
                             {testSet.regressionTests.some(
                               (test) => test.failedCount > 0
                             ) ? (
-                              <div className="failed-count">
+                              <div className="failed-count-ov">
                                 {testSet.regressionTests.filter(
                                   (test) => test.failedCount > 0
                                 ).length}{' '}
                                 Failed Tests
                               </div>
                             ) : (
-                              <div className="all-passed">All Passed</div>
+                              <div className="all-passed-ov">All Passed</div>
                             )}
                           </>
                         ) : (
-                          <div className="no-data">No data</div>
+                          <div className="no-data-ov">No data</div>
                         )}
                       </div>
                     )}

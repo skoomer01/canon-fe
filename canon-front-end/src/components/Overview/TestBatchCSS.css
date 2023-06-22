@@ -56,33 +56,28 @@
   flex-direction: row;
   gap: 20px;
   align-items: center;
-  justify-content: left; 
+  justify-content: center; 
 }
-
 .test-rectangle {
-  background-color: #4caf50;
+  background-color: #118615;
   color: white;
-  width: 60px;
-  height: 60px;
+  height: fit-content; 
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 24px;
   position: relative;
   transition: background-color 0.3s ease;
-  flex: 1; 
-  min-width: 500px; 
-  height: 100px;
-  
+  flex: 1;
+  min-width: unset; 
+  height: unset; 
+  white-space: nowrap;
 }
-
-
 
 .test-rectangle-fail {
   background-color: #ff0000;
   color: white;
-  width: 60px;
-  height: 60px;
+  height: fit-content; 
   display: flex;
   justify-content: center;
   align-items: center;
@@ -90,8 +85,9 @@
   position: relative;
   transition: background-color 0.3s ease;
   flex: 1; 
-  min-width: 500px; 
-  height: 100px;
+  min-width: unset; 
+  height: unset; 
+  white-space: nowrap; 
 }
 
 
@@ -147,20 +143,15 @@ nav a {
 }
 
 .failed-step-count{
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  
+  position: relative; 
+  width: 100%;
+  text-align: center; 
 }
-
 .checkmarkov {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  position: relative; 
+  width: 100%;
+  text-align: center; 
 }
-
 .test-name {
   font-size: 14px;
   text-align: center;
@@ -269,16 +260,17 @@ input:checked + .slider:before {
 }
 
 .loader {
-  border: 4px solid #f3f3f3; /* Light gray border */
-  border-top: 4px solid #3498db; /* Blue border for the loading animation */
-  border-radius: 50%; /* Rounded border */
-  width: 50px; /* Width and height of the loader */
+  border: 4px solid #f3f3f3; 
+  border-top: 4px solid #3498db; 
+  border-radius: 50%;
+  width: 50px; 
   height: 50px;
-  animation: spin 1s linear infinite; /* Animation properties */
-  margin: 40px auto; /* Center the loader horizontally */
+  animation: spin 1s linear infinite;
+  margin: 40px auto; 
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); } /* Starting point of the animation */
-  75% { transform: rotate(360deg); } /* Ending point of the animation */
+  0% { transform: rotate(0deg); } 
+  75% { transform: rotate(360deg); } 
 }
+

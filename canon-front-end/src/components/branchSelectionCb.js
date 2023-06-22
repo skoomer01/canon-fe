@@ -41,6 +41,7 @@ function BranchCombobox({ onSelectBranch }) {
         onSelectBranch(branchId);
     };
     return (
+      
         <div className='select-container'>
           <select onChange={handleSelectBranch}>
             <option value="0">Select a branch</option>
