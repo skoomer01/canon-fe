@@ -40,7 +40,7 @@ function TestDetailsForm({ testDetails }) {
         { field: 'subtestName', headerName: 'Name', width: 400 },
         {
             field: 'failedCounter',
-            headerName: 'Failed',
+            headerName: 'Test Result',
             width: 200,
             cellClassName: (params) => (params.value > 0 ? 'failed' : 'passed'),
             renderCell: (params) => (params.value === 0 ? '\u2713' : params.value),
@@ -227,8 +227,6 @@ function TestDetailsForm({ testDetails }) {
                 sx={{
                     height: '65vh',
                     width: '60vh',
-                    boxShadow: 1,
-                    borderRadius: 2,
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'center',

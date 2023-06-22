@@ -94,8 +94,6 @@ return (
             sx={{
                 height: '70vh',
                 width: '60vh',
-                boxShadow: 1,
-                borderRadius: 2,
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center',

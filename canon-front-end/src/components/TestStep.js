@@ -149,8 +149,6 @@ const TestStep = ({ id }) => {
                 sx={{
                     height: '60vh',
                     width: '80vh',
-                    boxShadow: 1,
-                    borderRadius: 2,
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'center',

@@ -27,7 +27,7 @@ function SubTestForm({ subTestDetails }) {
         { field: 'testStepName', headerName: 'Name', width: 300 },
         {
             field: 'errorid',
-            headerName: 'Test Stance',
+            headerName: 'Test Result',
             width: 200,
             cellClassName: (params) => (params.value > 0 ? 'failed' : 'passed'),
             renderCell: (params) => (params.value > 0 ? 'Failed' : 'Passed'),
@@ -167,8 +167,6 @@ function SubTestForm({ subTestDetails }) {
                 sx={{
                     height: '65vh',
                     width: '60vh',
-                    boxShadow: 1,
-                    borderRadius: 2,
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'center',
